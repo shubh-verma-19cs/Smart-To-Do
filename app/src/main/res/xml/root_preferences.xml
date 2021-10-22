@@ -1,0 +1,81 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    >
+
+        <Preference
+            app:key="tasks"
+            app:title="Tasks"
+            app:summary="Tap to add a task"
+            app:icon="@drawable/task"
+
+            >
+
+        </Preference>
+
+        <Preference
+            app:key="subtasks"
+            app:title="Sub-Tasks"
+            app:summary="Tap to add a subtask"
+            app:icon="@drawable/subtask"
+            >
+
+        </Preference>
+
+        <EditTextPreference
+            app:key="date"
+            app:title="Due Date"
+            app:icon="@drawable/calendar"
+            app:defaultValue="No date entered"
+            app:useSimpleSummaryProvider="true"/>
+
+        <EditTextPreference
+            app:key="date"
+            app:title="Time"
+            app:icon="@drawable/clock"
+            app:defaultValue="No time entered"
+            app:useSimpleSummaryProvider="true"/>
+
+        <MultiSelectListPreference
+            app:key="days"
+            app:title="Repeat"
+            app:icon="@drawable/repeat"
+            android:entries="@array/days"
+            app:summary="Select days to repeat the reminder"
+            android:entryValues="@array/days_value"/>
+
+        <DropDownPreference
+            app:key="priority"
+            app:title="Priority"
+            app:icon="@drawable/priority"
+            app:useSimpleSummaryProvider="true"
+            android:entries="@array/priority"
+            android:entryValues="@array/priority_values"
+            />
+
+        <EditTextPreference
+            app:key="link"
+            app:title="Add meeting link"
+            app:icon="@drawable/link"
+            app:useSimpleSummaryProvider="true"
+            />
+
+        <Preference
+            app:key="location"
+            app:title="Add location"
+            app:icon="@drawable/location"
+            app:summary="Add a location"
+            >
+
+        </Preference>
+
+        <Preference
+            app:key="tags"
+            app:title="Tags"
+            app:icon="@drawable/ic_baseline_bookmark_24"
+            >
+
+        </Preference>
+
+
+</PreferenceScreen>
