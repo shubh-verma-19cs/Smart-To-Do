@@ -1,5 +1,6 @@
 package com.example.splashscreen;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,12 +10,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout drawer ;
+
+
+    TextView textNotifItemCount;
+    int mNotifItemCount = 10;
+
+
+
 
     ImageView listSettings;
     @Override
@@ -55,4 +66,56 @@ public class HomeActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.top_menu, menu);
+        final MenuItem menuItem = menu.findItem(R.id.action_notif);
+
+        View actionView = menuItem.getActionView();
+        textNotifItemCount = (TextView) actionView.findViewById(R.id.notif_icon);
+
+        setupBadge();
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_notif: {
+
+//                Notification activity;
+
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setupBadge() {
+        if(textNotifItemCount != null){
+            if (mNotifItemCount == 0){
+                if (textNotifItemCount.getVisibility() != View.GONE){
+                    textNotifItemCount.setVisibility(View.GONE);
+                }
+            } else{
+                textNotifItemCount.setText(String.valueOf(Math.min(mNotifItemCount, 99)));
+                if (textNotifItemCount.getVisibility() != View.VISIBLE){
+                    textNotifItemCount.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+
+
 }
