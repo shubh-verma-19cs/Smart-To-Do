@@ -17,12 +17,12 @@
         >
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="80dp"
             android:background="@color/gradient_2"
             android:id="@+id/toolbar"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:elevation="4dp"/>
+            android:elevation="4dp" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -34,173 +34,173 @@
 
     </LinearLayout>
 
-<com.google.android.material.navigation.NavigationView
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    android:id="@+id/nav_view"
-    app:headerLayout="@layout/nav_header"
-    app:menu="@menu/drawer_menu"
-    />
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:id="@+id/nav_view"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu"
+        />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:id="@+id/switch1"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true">
-        <Switch
-            android:padding="12dp"
-            android:background="@color/purple_200"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-            android:text="Personal "
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="16dp"
-            android:layout_weight="1"
-
-            />
-
-        <Switch
-            android:padding="12dp"
-            android:background="@color/gradient_start"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="School "
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="16dp"
-            android:layout_weight="1"
-            />
+            android:layout_marginTop="65dp"
+            android:id="@+id/switch1"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
+            <Switch
+                android:padding="12dp"
+                android:background="@color/purple_200"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Personal "
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:layout_weight="1"
 
-        <Switch
-            android:padding="12dp"
-            android:background="@color/gradient_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="Work "
-            android:textStyle="bold"
-            android:textSize="16dp"
-            android:layout_weight="1"
-            />
-    </LinearLayout>
+                />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/switch1"
-        android:layout_marginTop="30dp"
-        >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="68dp"
-        android:width="100dp"
-        android:height="100dp"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:background="#F6ABEF"
-        android:text="MAD PROJECT"
-        android:textStyle="bold"
-        android:id="@+id/list1"/>
+            <Switch
+                android:padding="12dp"
+                android:background="#EFD31D"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="School "
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:layout_weight="1"
+                />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="70dp"
+            <Switch
+                android:padding="12dp"
+                android:background="#97F62C"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Work "
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
 
-        android:layout_toRightOf="@+id/list1"
-        android:width="100dp"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:height="100dp"
-        android:background="#89BFFF"
-        android:text="My Task"
-        android:id="@+id/list2"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/switch1"
+            android:layout_marginTop="30dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="68dp"
+                android:width="100dp"
+                android:height="100dp"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:background="#F6ABEF"
+                android:text="MAD PROJECT"
+                android:textStyle="bold"
+                android:id="@+id/list1"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/list2"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="70dp"
-        android:layout_toRightOf="@+id/list3"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:width="100dp"
-        android:height="100dp"
-        android:background="#9A7BDF"
-        android:text="Android"
-        android:textStyle="bold"
-        android:id="@+id/list4"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="70dp"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/list1"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="68dp"
-            android:width="100dp"
-            android:height="100dp"
-            android:background="#7EFBCF"
-            android:gravity="center"
-            android:text="Android"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:id="@+id/list3"/>
+                android:layout_toRightOf="@+id/list1"
+                android:width="100dp"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:height="100dp"
+                android:background="#89BFFF"
+                android:text="My Task"
+                android:id="@+id/list2"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_below="@id/list3"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="68dp"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:width="100dp"
-        android:textAlignment="center"
-        android:height="100dp"
-        android:background="#88F1E7"
-        android:text="AI"
-        android:id="@+id/list5"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_below="@id/list4"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:layout_marginLeft="70dp"
-        android:layout_toRightOf="@id/list5"
-        android:layout_marginTop="40dp"
-        android:width="100dp"
-        android:height="100dp"
-        android:background="#FAE193"
-        android:text="PSTAT"
-        android:id="@+id/list6"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/list2"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="70dp"
+                android:layout_toRightOf="@+id/list3"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:width="100dp"
+                android:height="100dp"
+                android:background="#9A7BDF"
+                android:text="Android"
+                android:textStyle="bold"
+                android:id="@+id/list4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/list1"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="68dp"
+                android:width="100dp"
+                android:height="100dp"
+                android:background="#7EFBCF"
+                android:gravity="center"
+                android:text="Android"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:id="@+id/list3"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_below="@id/list3"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="68dp"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:width="100dp"
+                android:textAlignment="center"
+                android:height="100dp"
+                android:background="#88F1E7"
+                android:text="AI"
+                android:id="@+id/list5"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_below="@id/list4"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:layout_marginLeft="70dp"
+                android:layout_toRightOf="@id/list5"
+                android:layout_marginTop="40dp"
+                android:width="100dp"
+                android:height="100dp"
+                android:background="#FAE193"
+                android:text="PSTAT"
+                android:id="@+id/list6"/>
 
 
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_below="@+id/list6"
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_below="@+id/list6"
 
-        android:id="@+id/list_settings"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="30dp"
-        android:src="@drawable/ic_baseline_add_circle_outline_24" />
-    </RelativeLayout>
+                android:id="@+id/list_settings"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="70dp"
+                android:layout_marginEnd="30dp"
+                android:src="@drawable/ic_baseline_add_circle_outline_24" />
+        </RelativeLayout>
     </RelativeLayout>
 
 
