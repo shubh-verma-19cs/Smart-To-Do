@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent =new Intent(MainActivity.this,
                         LogInActivity.class);
                 startActivity(intent);
-
                 finish();
             }
         }, SPLASH_SCREEN_TIME_OUT);
