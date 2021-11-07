@@ -10,29 +10,37 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SplashScreen">
         <activity
+            android:name=".PreferencesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Notifications"
+            android:exported="false"
+            android:label="Notifications"
+            android:parentActivityName=".HomeActivity" />
+        <activity
             android:name=".ForgotPassword"
-            android:parentActivityName=".LogInActivity"
+            android:exported="true"
             android:label=""
-            android:exported="true" />
+            android:parentActivityName=".LogInActivity" />
         <activity
             android:name=".ListSettings"
-            android:parentActivityName=".HomeActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".TaskSettings"
             android:exported="true" />
         <activity
             android:name=".TabSettings"
             android:exported="true"
-            android:parentActivityName=".ListSettings"
-            android:label="@string/title_activity_tab_settings" />
+            android:label="@string/title_activity_tab_settings"
+            android:parentActivityName=".ListSettings" />
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />
         <activity
             android:name=".HomeActivity"
             android:exported="true"
-            android:theme="@style/Theme.SplashScreen.NoActionBar"/>
+            android:theme="@style/Theme.SplashScreen.NoActionBar" />
         <activity
             android:name=".LogInActivity"
             android:exported="true" />

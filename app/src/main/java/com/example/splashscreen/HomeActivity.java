@@ -94,7 +94,8 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.action_notif: {
 
 //                Notification activity;
-
+                Intent notifAct = new Intent(HomeActivity.this, Notifications.class);
+                startActivity(notifAct);
                 return true;
             }
         }
