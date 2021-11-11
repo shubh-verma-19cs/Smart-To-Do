@@ -22,10 +22,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     TextView textNotifItemCount;
+    MenuItem settingsButton;
     int mNotifItemCount = 10;
-
-
-
 
     ImageView listSettings;
     @Override
@@ -36,6 +34,16 @@ public class HomeActivity extends AppCompatActivity {
         listSettings = findViewById(R.id.list_settings);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+        settingsButton = findViewById(R.id.settings);
+        try {
+            settingsButton.setOnMenuItemClickListener(menuItem -> {
+                startSettingsActivity();
+                return true;
+            });
+        } catch (NullPointerException e){
+
+        }
 
         listSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +60,11 @@ public class HomeActivity extends AppCompatActivity {
         toggle.syncState();
     }
 
+    public void startSettingsActivity() {
+        Intent settingsIntent = new Intent(HomeActivity.this, PreferencesActivity.class);
+        startActivity(settingsIntent);
+    }
+
     public void startListSettings() {
         Intent listIntent = new Intent(HomeActivity.this, ListSettings.class);
         startActivity(listIntent);
@@ -63,7 +76,8 @@ public class HomeActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
         }
         else {
-            super.onBackPressed();
+//            super.onBackPressed();
+              this.finishAffinity();
         }
     }
 

@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/google.xml" value="0.24444444444444444" />
         <entry key="app/src/main/res/drawable/google_background.xml" value="0.14027777777777778" />
         <entry key="app/src/main/res/drawable/google_icon_background.xml" value="0.14027777777777778" />
+        <entry key="app/src/main/res/drawable/gradient.xml" value="0.24487179487179486" />
         <entry key="app/src/main/res/drawable/gradient_animation.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/drawable/gradient_center.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/drawable/gradient_end.xml" value="0.33" />
@@ -29,6 +30,7 @@
         <entry key="app/src/main/res/layout/activity_task_settings.xml" value="0.23368055555555556" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.67" />
         <entry key="app/src/main/res/layout/notification_icon_action_bar.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/preferences_list_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/settings_activity.xml" value="0.23368055555555556" />
         <entry key="app/src/main/res/menu/drawer_menu.xml" value="0.5" />
         <entry key="app/src/main/res/menu/top_menu.xml" value="0.23425925925925925" />

@@ -53,42 +53,42 @@
             android:id="@+id/switch1"
             android:orientation="horizontal"
             android:layout_centerHorizontal="true">
-            <Switch
-                android:padding="12dp"
-                android:background="@color/purple_200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Personal "
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_weight="1"
+<!--            <androidx.appcompat.widget.SwitchCompat-->
+<!--                android:padding="12dp"-->
+<!--                android:background="@color/purple_200"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Personal "-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textSize="16dp"-->
+<!--                android:layout_weight="1"-->
 
-                />
+<!--                />-->
 
-            <Switch
-                android:padding="12dp"
-                android:background="#EFD31D"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="School "
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:textSize="16dp"
-                android:layout_weight="1"
-                />
+<!--            <Switch-->
+<!--                android:padding="12dp"-->
+<!--                android:background="#EFD31D"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="School "-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="16dp"-->
+<!--                android:layout_weight="1"-->
+<!--                />-->
 
-            <Switch
-                android:padding="12dp"
-                android:background="#97F62C"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="Work "
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_weight="1"
-                />
+<!--            <Switch-->
+<!--                android:padding="12dp"-->
+<!--                android:background="#97F62C"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:text="Work "-->
+<!--                android:textStyle="bold"-->
+<!--                android:textSize="16dp"-->
+<!--                android:layout_weight="1"-->
+<!--                />-->
         </LinearLayout>
 
         <RelativeLayout
