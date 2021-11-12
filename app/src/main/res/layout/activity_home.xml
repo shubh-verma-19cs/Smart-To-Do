@@ -34,14 +34,7 @@
 
     </LinearLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:id="@+id/nav_view"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu"
-        />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -190,18 +183,44 @@
                 android:id="@+id/list6"/>
 
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_below="@+id/list6"
+<!--            <ImageView-->
+<!--                android:layout_width="48dp"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:layout_below="@+id/list6"-->
 
-                android:id="@+id/list_settings"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="70dp"
-                android:layout_marginEnd="30dp"
-                android:src="@drawable/ic_baseline_add_circle_outline_24" />
+<!--                android:id="@+id/list_settings"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_marginTop="70dp"-->
+<!--                android:layout_marginEnd="30dp"-->
+<!--                android:src="@drawable/ic_baseline_add_circle_outline_24" />-->
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingadd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="75dp"
+                android:elevation="2dp"
+                android:src="@drawable/add"
+                app:tint="@color/white" />
+
+
         </RelativeLayout>
+
+
+
     </RelativeLayout>
 
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:id="@+id/nav_view"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu"
+        />
 
 </androidx.drawerlayout.widget.DrawerLayout>

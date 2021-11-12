@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText regUser,regMail,regPass;
     Button regBtn;
     TextView registerView;
+    CheckBox checkBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         regPass = (EditText) findViewById(R.id.password_register);
         regBtn = (Button) findViewById(R.id.btn_register);
         registerView = (TextView) findViewById(R.id.login_text);
+        checkBox= (CheckBox) findViewById(R.id.chck1);
         FirebaseAuth mAuth;
         // ...
         // Initialize Firebase Auth
@@ -91,7 +97,19 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                {
+                    regPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+                else
+                {
+                    regPass.setTransformationMethod((PasswordTransformationMethod.getInstance()));
+                }
+            }
+        });
 
     }
     public void startLoginPage(){
