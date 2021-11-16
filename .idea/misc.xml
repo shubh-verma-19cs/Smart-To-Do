@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/add.xml" value="0.15729166666666666" />
+        <entry key="app/src/main/res/drawable/calendar.xml" value="0.15729166666666666" />
+        <entry key="app/src/main/res/drawable/clock.xml" value="0.15729166666666666" />
+        <entry key="app/src/main/res/drawable/dialog_bg.xml" value="0.15729166666666666" />
         <entry key="app/src/main/res/drawable/google.xml" value="0.24444444444444444" />
         <entry key="app/src/main/res/drawable/google_background.xml" value="0.14027777777777778" />
         <entry key="app/src/main/res/drawable/google_icon_background.xml" value="0.14027777777777778" />
@@ -13,15 +17,21 @@
         <entry key="app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.19166666666666668" />
         <entry key="app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.24444444444444444" />
         <entry key="app/src/main/res/drawable/ic_baseline_person_outline_24.xml" value="0.24444444444444444" />
+        <entry key="app/src/main/res/drawable/location.xml" value="0.15729166666666666" />
+        <entry key="app/src/main/res/drawable/logout.xml" value="0.15729166666666666" />
+        <entry key="app/src/main/res/drawable/plus.xml" value="0.21302083333333333" />
         <entry key="app/src/main/res/layout/activity_forget_password.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.175" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_list_settings.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_log_in.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_register2.xml" value="0.23229166666666667" />
         <entry key="app/src/main/res/layout/activity_task_settings.xml" value="0.23368055555555556" />
+        <entry key="app/src/main/res/layout/bottomsheetlayout.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/dialog_bg.xml" value="0.14114583333333333" />
+        <entry key="app/src/main/res/layout/item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.23368055555555556" />
         <entry key="app/src/main/res/layout/settings_activity.xml" value="0.23368055555555556" />
         <entry key="app/src/main/res/menu/drawer_menu.xml" value="0.5" />

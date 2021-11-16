@@ -316,7 +316,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="add" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="plus" />
                             <entry key="sourceFile" value="$PROJECT_DIR$/app/src/main/assets/7853741_logout_kashifarif_exit_out_close_icon.svg" />
                           </map>
                         </option>
