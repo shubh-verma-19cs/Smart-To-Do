@@ -47,7 +47,7 @@ public class ListSettings extends AppCompatActivity {
     }
 
     public void startTaskSettings() {
-        Intent nextListInt = new Intent(ListSettings.this, TabSettings.class);
+        Intent nextListInt = new Intent(ListSettings.this, TaskSettings.class);
         startActivity(nextListInt);
     }
 
