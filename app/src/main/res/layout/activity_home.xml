@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity"
-    tools:openDrawer="start">
+    tools:openDrawer="start"
+    android:background="?attr/colorOnPrimary">
 
 
     <LinearLayout
@@ -205,7 +206,10 @@
                 android:layout_marginBottom="75dp"
                 android:elevation="2dp"
                 android:src="@drawable/add"
-                app:tint="@color/white" />
+                app:background="?attr/colorPreferenceLine"
+                app:tint="?attr/colorOnPrimary"
+                android:backgroundTint="?attr/colorPreferenceLine"
+                />
 
 
         </RelativeLayout>
@@ -221,6 +225,8 @@
         android:id="@+id/nav_view"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu"
+        android:background="?attr/colorOnPrimary"
+        app:itemTextColor="?attr/colorOnSecondary"
         />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F6F6F6"
+    android:background="?attr/colorPreferenceBack"
     android:id="@+id/optionLayout">
 
     <LinearLayout
@@ -33,11 +33,11 @@
                 android:text="optionName"
                 android:textStyle="bold"
                 android:textSize="15dp"
-                android:textColor="#1A1A1A"
+                android:textColor="?attr/colorPreferenceFore"
                 android:paddingLeft="20dp"/>
             <TextView
                 android:id="@+id/optionDesc"
-                android:textColor="#3A3A3A"
+                android:textColor="?attr/colorPreferenceFore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12dp"
@@ -51,6 +51,6 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_gravity="center"
-        android:background="@color/purple_700" />
+        android:background="?attr/colorPreferenceLine" />
 
 </LinearLayout>

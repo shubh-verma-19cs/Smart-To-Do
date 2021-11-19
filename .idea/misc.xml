@@ -3,6 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-anydpi/about.xml" value="0.24316239316239316" />
+        <entry key="app/src/main/res/drawable-anydpi/alarm.xml" value="0.24316239316239316" />
+        <entry key="app/src/main/res/drawable-anydpi/feedback.xml" value="0.24316239316239316" />
+        <entry key="app/src/main/res/drawable-anydpi/font_size.xml" value="0.24316239316239316" />
+        <entry key="app/src/main/res/drawable-anydpi/hide_comp.xml" value="0.24316239316239316" />
+        <entry key="app/src/main/res/drawable-anydpi/notif.xml" value="0.24316239316239316" />
+        <entry key="app/src/main/res/drawable-anydpi/priv_pol.xml" value="0.24316239316239316" />
+        <entry key="app/src/main/res/drawable-anydpi/rating.xml" value="0.24316239316239316" />
+        <entry key="app/src/main/res/drawable-anydpi/swipe_del.xml" value="0.24316239316239316" />
+        <entry key="app/src/main/res/drawable-anydpi/theme.xml" value="0.24316239316239316" />
+        <entry key="app/src/main/res/drawable/add.xml" value="0.24316239316239316" />
         <entry key="app/src/main/res/drawable/badge_background.xml" value="0.10740740740740741" />
         <entry key="app/src/main/res/drawable/circleimage.xml" value="0.29873417721518986" />
         <entry key="app/src/main/res/drawable/google.xml" value="0.24444444444444444" />

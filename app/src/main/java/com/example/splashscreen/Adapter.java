@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -100,19 +101,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public void showThemeSelection() {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
             alertDialog.setTitle("Theme");
-            String[] items = {"Light", "Dark", "Device Default"};
-            alertDialog.setSingleChoiceItems(items, 1, new DialogInterface.OnClickListener() {
+            String[] items = {"Light", "Dark"};
+            alertDialog.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     switch (i) {
                         case 0:
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                             Toast.makeText(context, "Light theme", Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                             Toast.makeText(context, "Dark theme", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 2:
-                            Toast.makeText(context, "Device default", Toast.LENGTH_SHORT).show();
                             break;
                     }
                 }

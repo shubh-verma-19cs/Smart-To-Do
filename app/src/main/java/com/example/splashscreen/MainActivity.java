@@ -2,9 +2,11 @@ package com.example.splashscreen;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -27,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+
         setContentView(R.layout.activity_main);
         try {
             this.getSupportActionBar().hide();
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         catch(NullPointerException e){
 
         }
+
         ConstraintLayout constraintLayout = findViewById(R.id.root_layout);
         AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
         animationDrawable.setEnterFadeDuration(100);

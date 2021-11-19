@@ -13,7 +13,7 @@
             android:name=".PreferencesActivity"
             android:exported="false"
             android:parentActivityName=".HomeActivity"
-            android:label="Preferences"/>
+            android:label="Preferences" />
         <activity
             android:name=".Notifications"
             android:exported="false"
