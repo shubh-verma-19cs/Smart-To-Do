@@ -13,7 +13,7 @@
         android:layout_margin="5dp"
         android:hint="New task"
         android:height="30dp"
-        android:textColorHint="@color/black"
+        android:textColorHint="#9D9B9B"
         android:textColor="@color/black"
         android:background="@android:color/transparent"
         android:textSize="18dp"
@@ -27,11 +27,29 @@
         android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         android:layout_margin="4dp"
-        android:textColorHint="@color/black"
+        android:textColorHint="#9B9A9A"
         android:textColor="@color/black"
         android:hint="Description"
         android:textSize="14dp"
     />
+
+    <TextView
+        android:id="@+id/dateTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Task_Desc"
+        android:text="2021-09-11"
+        android:layout_margin="4dp"
+        />
+    <TextView
+        android:id="@+id/timeTV"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/dateTV"
+        android:layout_below="@+id/Task_Desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25:61"
+        />
 
     <ImageView
         android:layout_width="wrap_content"

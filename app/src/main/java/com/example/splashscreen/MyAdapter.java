@@ -19,6 +19,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     ArrayList<Model> mlist;
     Context context;
     DatabaseReference d;
+    String empt = " ";
     public MyAdapter(Context context,ArrayList<Model> mlist){
         this.mlist = mlist;
         this.context = context;
@@ -34,15 +35,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
         Model model = mlist.get(position);
 //        Log.d("taskname", ""+model.getTaskDate());
 //        Log.d("taskdesc", ""+model.getDescription());
 //        Log.d("taskdate", ""+model.getTime());
 
         holder.taskname.setText(model.getTaskName());
-        holder.tasdesc.setText(model.getDescription());
-        holder.time.setText(model.getTime());
-        holder.date.setText(model.getTaskDate());
+            holder.tasdesc.setText(model.getDescription());
+            holder.time.setText(model.getTime());
+            holder.date.setText(model.getTaskDate());
     }
 
     @Override

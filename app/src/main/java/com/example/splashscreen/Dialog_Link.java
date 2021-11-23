@@ -32,9 +32,9 @@ public class Dialog_Link extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 tasklink = view.findViewById(R.id.linkTask);
-                meetlink = view.findViewById(R.id.MeetLink);
+//                meetlink = view.findViewById(R.id.MeetLink);
                 BottomSheet b = new BottomSheet();
-                b.link_meet = meetlink.toString().trim();
+//                b.link_meet = meetlink.toString().trim();
                 b.link_task = tasklink.toString().trim();
 
             }

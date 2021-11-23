@@ -10,22 +10,22 @@
             android:title="Profile"/>
 
     </group>
-    <item android:id="@+id/team"
-        android:title="Teams">
-        <menu>
-            <group>
-                <item android:id="@+id/team1"
-                    android:icon="@drawable/navbar_people"
-                    android:title="M.A.D"/>
-                <item android:id="@+id/team2"
-                    android:icon="@drawable/navbar_people"
-                    android:title="Team 2"/>
-                <item android:id="@+id/nav_new_team"
-                    android:icon="@drawable/add"
-                    android:title="New Team"/>
-            </group>
-        </menu>
-    </item>
+<!--    <item android:id="@+id/team"-->
+<!--        android:title="Teams">-->
+<!--        <menu>-->
+<!--            <group>-->
+<!--                <item android:id="@+id/team1"-->
+<!--                    android:icon="@drawable/navbar_people"-->
+<!--                    android:title="M.A.D"/>-->
+<!--                <item android:id="@+id/team2"-->
+<!--                    android:icon="@drawable/navbar_people"-->
+<!--                    android:title="Team 2"/>-->
+<!--                <item android:id="@+id/nav_new_team"-->
+<!--                    android:icon="@drawable/add"-->
+<!--                    android:title="New Team"/>-->
+<!--            </group>-->
+<!--        </menu>-->
+<!--    </item>-->
 
     <item android:id="@+id/settings"
         android:icon="@drawable/settings"

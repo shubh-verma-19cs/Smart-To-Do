@@ -3,6 +3,7 @@ package com.example.splashscreen;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,8 @@ public class DatePickerFragment extends DialogFragment {
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONDAY);
         int date = c.get(Calendar.DATE);
+
+        Log.d("CALENDAR",c.toString());
         return new DatePickerDialog(getActivity(), (DatePickerDialog.OnDateSetListener)getActivity(),year,month,date);
     }
 }

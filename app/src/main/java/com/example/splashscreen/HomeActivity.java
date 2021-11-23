@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,8 +44,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 public class HomeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -56,8 +59,9 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     UUID userId;
     String currentDate;
 
+    SimpleDateFormat sdf;
+    String currentDateandTime;
     BottomSheet b = new BottomSheet();
-
     private DrawerLayout drawer ;
     private NavigationView navigationView;
 
@@ -65,6 +69,10 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     int mNotifItemCount = 10;
     FloatingActionButton floatadd;
     FloatingActionButton bottomsheet;
+
+
+
+
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int date) {
         Calendar c = Calendar.getInstance();
@@ -90,6 +98,11 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
+        sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z");
+        currentDateandTime = sdf.format(new Date());
+
+
         floatadd = findViewById(R.id.floatingadd);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -105,13 +118,13 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
                         Intent i = new Intent(HomeActivity.this, PreferencesActivity.class);
                         startActivity(i);
                         break;
-                    case R.id.team1:
-
-                        break;
-                    case R.id.team2:
-                        break;
-                    case R.id.nav_new_team:
-                        break;
+//                    case R.id.team1:
+//
+//                        break;
+//                    case R.id.team2:
+//                        break;
+//                    case R.id.nav_new_team:
+//                        break;
                     case R.id.settings:
                         Intent i1 = new Intent(HomeActivity.this, PreferencesActivity.class);
                         startActivity(i1);
@@ -131,6 +144,9 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
                 return false;
             }
+
+
+
         });
 
         fa = FirebaseAuth.getInstance();
@@ -174,18 +190,24 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
+
+
+
     }
 
     private void EventChangeListner() {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
 
                     Log.d("Nnn", ""+dataSnapshot.getValue());
 
                     Model model=  dataSnapshot.getValue(Model.class);
-                    list.add(model);
+                    list.add(0,model);
                 }
                 myAdapter.notifyDataSetChanged();
             }
@@ -213,9 +235,9 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
-    public void writeNewUser(UUID userId, String name, String taskdesc) {
+    public void writeNewUser(String currentDateandTime, String name, String taskdesc) {
 //        user newuser = new user();
-        mDatabase.child("users").child(mail).child(userId.toString()).child("taskname").setValue(name);
+        mDatabase.child("users").child(mail).child(currentDateandTime).child("taskname").setValue(name);
 
     }
 

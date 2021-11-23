@@ -2,6 +2,7 @@ package com.example.splashscreen;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,12 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,6 +28,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,9 +50,16 @@ public class BottomSheet extends BottomSheetDialogFragment  {
     }
 
 
+    BottomSheetDialog dialog;
+    HomeActivity homeActivity;
+    String currentDateTime;
+    SimpleDateFormat sdf;
+//    String currentDateandTime;
+
+
 
     UUID userId;
-    static String date;
+    String date;
     private DatabaseReference mDatabase;
     static String Time;
     ImageView time;
@@ -58,15 +71,43 @@ public class BottomSheet extends BottomSheetDialogFragment  {
     String mail;
     FirebaseUser curr_user;
 
+
+    TextView dateTV, timeTV;
+
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
+//    }
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle)
+//    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view1 = inflater.inflate(R.layout.bottomsheetlayout,container,false);
+        android.view.View view1 = inflater.inflate(R.layout.bottomsheetlayout,container,false);
         Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_bottom);
         view1.startAnimation(hyperspaceJumpAnimation);
         Button Savebtn = view1.findViewById(R.id.task_save);
         ImageView calendar_date = view1.findViewById(R.id.task_date);
         ImageView Time = view1.findViewById(R.id.task_time);
+
+        dateTV = view1.findViewById(R.id.dateTV);
+        timeTV = view1.findViewById(R.id.timeTV);
+
+        dateTV.setVisibility(View.GONE);
+        timeTV.setVisibility(View.GONE);
+
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        currentDateTime = sdf.format(new Date());
+
+        Log.d("SHUBH ",currentDateTime);
+
         fb = FirebaseAuth.getInstance();
         curr_user = fb.getCurrentUser();
         mail = curr_user.getUid();
@@ -78,6 +119,9 @@ public class BottomSheet extends BottomSheetDialogFragment  {
             public void onClick(View view) {
                 DialogFragment datepicker = new DatePickerFragment();
                 datepicker.show(getActivity().getSupportFragmentManager(), "Date Picker");
+
+
+
             }
         });
         ImageView time = view1.findViewById(R.id.task_time);
@@ -88,6 +132,7 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                 startDialog();
             }
         });
+
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,6 +147,8 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                             Date date = f24hour.parse(time);
                             SimpleDateFormat f12hour = new SimpleDateFormat("HH:mm aa");
                             Task_Time = f12hour.format(date);
+
+
                         }
                         catch (ParseException e){
                             e.printStackTrace();
@@ -112,6 +159,7 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                 timePickerDialog.updateTime(thour,tmin);
                 timePickerDialog.show();
             }
+
         });
 
         Savebtn.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +170,14 @@ public class BottomSheet extends BottomSheetDialogFragment  {
 //                HomeActivity hm = new HomeActivity();
 //                EditText taskname = view.findViewById(R.id.task_name);
                 String tname,tdesc;
+
+                if(date==null){
+                    date = " ";
+                }
+                if(Task_Time==null){
+                    Task_Time = " ";
+                }
+//                Log.d("TASKTIME",Task_Time);
                 if(!TextUtils.isEmpty(taskname.getText().toString().trim())){
                     tname = taskname.getText().toString().trim();
                     if(!TextUtils.isEmpty(taskdesc.getText().toString().trim())){
@@ -130,16 +186,39 @@ public class BottomSheet extends BottomSheetDialogFragment  {
 
                         if(!TextUtils.isEmpty(link_meet)){
                             if(!TextUtils.isEmpty(link_task)){
-                                writeNewUser(userId,tname,tdesc,""+date,""+Task_Time,""+link_meet,""+link_task);
-                                Log.d("NNN", ""+link_meet);
-                                Log.d("NNN", ""+link_task);
+                                writeNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_meet,""+link_task);
                             }
                             else{
-                                writeNewUser(userId,tname,tdesc,""+date,""+Task_Time,""+link_meet);
+                                writeNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_meet);
                             }
                         }
                         else{
-                            writeNewUser(userId,tname,tdesc,""+date,""+Task_Time);
+                            if(!TextUtils.isEmpty(link_task)){
+                                mwriteNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_task);
+                            }
+                            else{
+                                mtwriteNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time);
+                            }
+                        }
+                        Toast.makeText(getContext(),"Task Added Successfully",Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        tdesc = taskdesc.getText().toString().trim();
+                        if(!TextUtils.isEmpty(link_meet)){
+                            if(!TextUtils.isEmpty(link_task)){
+                                dwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_meet,""+link_task);
+                            }
+                            else{
+                                dwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_meet);
+                            }
+                        }
+                        else{
+                            if(!TextUtils.isEmpty(link_task)){
+                                mdwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_task);
+                            }
+                            else{
+                                mtdwriteNewUser(currentDateTime,tname,""+date,""+Task_Time);
+                            }
                         }
                         Toast.makeText(getContext(),"Task Added Successfully",Toast.LENGTH_LONG).show();
                     }
@@ -153,7 +232,29 @@ public class BottomSheet extends BottomSheetDialogFragment  {
 //                startHomePage();
             }
         });
+
+//        dialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialog);
+//        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+//            @Override
+//            public void onShow(DialogInterface dialog) {
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        BottomSheetDialog d = (BottomSheetDialog) dialog;
+//                        FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+//                        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+//                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//                    }
+//                },0);
+//            }
+//        });
+
+
         return view1;
+
+
+
+
     }
 
     private void startDialog() {
@@ -161,41 +262,23 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         dialog_link.show(getActivity().getSupportFragmentManager(), "Edit Task Details");
     }
 
-    public void writeNewUser(UUID userId, String name, String taskdesc,String taskdate,String Time) {
+    public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time) {
 //        HashMap<String ,String > usermap = new HashMap<>();
 //        usermap.put("TaskName",name);
 //        usermap.put("Description",taskdesc);
 //        usermap.put("Date",taskdate);
 //        usermap.put("Time",Time);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("TaskName").setValue(name);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("Time").setValue(Time);
-
-
-//        mDatabase.child("users").child(userId.toString()).setValue(usermap);
-
-        Log.d("NEWS", Time);
-        Log.d("NEWS", taskdesc);
-        Log.d("NEWS", taskdate);
-
-
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
     }
-    public void writeNewUser(UUID userId, String name, String taskdesc,String taskdate,String Time,String meet){
-//        HashMap<String ,String > usermap = new HashMap<>();
-//        usermap.put("TaskName",name);
-//        usermap.put("Description",taskdesc);
-//        usermap.put("Date",taskdate);
-//        usermap.put("Time",Time);
-//        usermap.put("meetlink",meet);
-//        mDatabase.child("users").child(userId.toString()).setValue(usermap);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("TaskName").setValue(name);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("Time").setValue(Time);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("meet").setValue(meet);
-
-
+    public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String meet){
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("meet").setValue(meet);
     }
     public void startHomePage() {
 
@@ -205,7 +288,7 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         startActivity(logIntent);
 
     }
-    public void writeNewUser(UUID userId, String name, String taskdesc,String taskdate,String Time,String meet,String ltask){
+    public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String meet,String ltask){
 //        HashMap<String ,String > usermap = new HashMap<>();
 //        usermap.put("TaskName",name);
 //        usermap.put("Description",taskdesc);
@@ -214,13 +297,56 @@ public class BottomSheet extends BottomSheetDialogFragment  {
 //        usermap.put("meetlink",meet);
 //        usermap.put("tasklink",ltask);
 //        mDatabase.child("users").child(userId.toString()).setValue(usermap);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("TaskName").setValue(name);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("Time").setValue(Time);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("meet").setValue(meet);
-        mDatabase.child("users").child(mail).child(userId.toString()).child("ltask").setValue(ltask);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("meet").setValue(meet);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("ltask").setValue(ltask);
 
     }
+    public void mtwriteNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time){
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+    }
+    public void mwriteNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String ltask){
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("ltask").setValue(ltask);
+    }
+    public void mtdwriteNewUser(String currentDateTime, String name,String taskdate,String Time){
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+//        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+    }
+    public void mdwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String ltask){
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+//        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("ltask").setValue(ltask);
+    }
+    public void dwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String meet,String ltask){
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+//        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("meet").setValue(meet);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("ltask").setValue(ltask);
+    }
+    public void dwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String meet){
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+//        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("meet").setValue(meet);
+    }
+
+
 
 }
