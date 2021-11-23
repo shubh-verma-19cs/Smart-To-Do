@@ -22,7 +22,6 @@ import org.w3c.dom.Text;
 public class LogInActivity extends AppCompatActivity {
 
     EditText userEdit, passEdit;
-    user u;
     TextView registerView, forgetPass,divert_reg;
 
     @Override
@@ -43,7 +42,6 @@ public class LogInActivity extends AppCompatActivity {
         forgetPass = (TextView) findViewById(R.id.forgotpass);
         divert_reg = (TextView) findViewById(R.id.divert_to_reg);
         FirebaseAuth mAuth;
-        u = new user();
         // ...
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();

@@ -35,6 +35,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,14 +49,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class HomeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
 //    private DrawerLayout drawer ;
     RecyclerView recyclerView;
-//    MyAdapter myAdapter;
-
+    MyAdapter myAdapter;
+    ArrayList<Model> list;
     UUID userId;
     String currentDate;
 
@@ -68,9 +71,13 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
         b.date = currentDate;
     }
-    private DatabaseReference mDatabase;
+    DatabaseReference mDatabase;
+    FirebaseDatabase db;
+    FirebaseAuth fa;
+    FirebaseUser curr_user;
     ImageView listSettings;
     ImageView calendar_date;
+    String mail;
 
 //    Button Cld_btn;
     FloatingActionButton bottomsheet;
@@ -79,21 +86,17 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        fa = FirebaseAuth.getInstance();
+        curr_user = fa.getCurrentUser();
+        mail = curr_user.getUid();
 
         userId = (UUID) UUID.randomUUID();
 //        recyclerView = findViewById(R.id.tasks);
         bottomsheet = findViewById(R.id.list_settings);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        recyclerView = findViewById(R.id.recycler_tasks);
+        mDatabase = FirebaseDatabase.getInstance().getReference("users/"+mail);
         calendar_date = findViewById(R.id.task_date);
 
-//        Cld_btn = findViewById(R.id.cld);
-//                calendar_date.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                DialogFragment datepicker = new DatePickerFragment();
-//                datepicker.show(getSupportFragmentManager(), "Date Picker");
-//            }
-//        });
         bottomsheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,41 +106,13 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
             }
         });
 
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        list = new ArrayList<Model>();
+        myAdapter = new MyAdapter(HomeActivity.this,list);
+        recyclerView.setAdapter(myAdapter);
+        EventChangeListner();
 
-
-
-
-
-
-//        list = new ArrayList<>();
-//        u1= new user();
-//        u2= new user();
-//        u1.setTask_name("neq");
-//        u2.setTask_name("to do appp");
-//        list.add(u1);
-//        list.add(u2);
-//        databaseReference = FirebaseDatabase.getInstance().getReference("Users/TaskName");
-//        databaseReference.setValue("Hello I'm in");
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//        list  = new ArrayList<>();
-//        myAdapter = new MyAdapter(this,list);
-//        recyclerView.setAdapter(myAdapter);
-//        databaseReference.addValueEventListener(new ValueEventListener(){
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-//                    dataSnapshot.getValue(user.class);
-//                    list.add(u1);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 //        listSettings = findViewById(R.id.list_settings);
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
@@ -157,9 +132,34 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 //        toggle.syncState();
     }
 
+    private void EventChangeListner() {
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
 
+                    Log.d("Nnn", ""+dataSnapshot.getValue());
 
+                    Model model=  dataSnapshot.getValue(Model.class);
+                    list.add(model);
+                }
+                myAdapter.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        for (int i=0;i<list.size();i++){
+            Log.d("FFF",list.get(i).TaskName);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finishAffinity();
+    }
 
     private void showDialog() {
 
@@ -175,10 +175,11 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
     }
     public void writeNewUser(UUID userId, String name, String taskdesc) {
-        user newuser = new user();
-        mDatabase.child("users").child(userId.toString()).child("taskname").setValue(name);
+//        user newuser = new user();
+        mDatabase.child("users").child(mail).child(userId.toString()).child("taskname").setValue(name);
 
     }
+
 //    public void startListSettings() {
 //        Intent listIntent = new Intent(HomeActivity.this, ListSettings.class);
 //        startActivity(listIntent);
