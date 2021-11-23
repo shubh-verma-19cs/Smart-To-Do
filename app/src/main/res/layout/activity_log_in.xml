@@ -56,19 +56,20 @@
         android:textColor="@color/white"
         android:textColorHint="#99FFFFFF"
         android:textStyle="bold" />
+
     <CheckBox
+        android:id="@+id/chck1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/chck1"
         android:layout_below="@id/password"
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/white"
+        android:buttonTint="@color/white"
         android:text="Show Password"
         android:textColor="@color/white"
-        android:textColorHint="#99FFFFFF"
-        android:backgroundTint="@color/white"
-        android:buttonTint="@color/white"/>
+        android:textColorHint="#99FFFFFF" />
 
     <Button
         android:id="@+id/loginbtn"
@@ -84,25 +85,30 @@
         android:textSize="20dp"
 
         />
+
     <TextView
+        android:id="@+id/forgotpass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
         android:text="Forgot password ?"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="25dp"
         android:textColor="#9AFFFFFF"
-        android:textSize="15dp"
-        android:id="@+id/forgotpass"
-        android:layout_below="@+id/loginbtn"/>
+        android:textSize="15dp" />
 
     <TextView
         android:id="@+id/divert_to_reg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/forgotpass"
+        android:layout_below="@+id/loginbtn"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="110dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="50dp"
         android:text="@string/new_sign"
         android:textColor="#BAFFFFFF"
         android:textSize="17dp" />

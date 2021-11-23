@@ -8,16 +8,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,23 +36,52 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class HomeActivity extends AppCompatActivity {
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.UUID;
+
+public class HomeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+
+
+    RecyclerView recyclerView;
+    MyAdapter myAdapter;
+    ArrayList<Model> list;
+    UUID userId;
+    String currentDate;
+
+    BottomSheet b = new BottomSheet();
 
     private DrawerLayout drawer ;
     private NavigationView navigationView;
 
-//    FirebaseAuth mAuth ;
-//    SharedPreferences sp;
-
     TextView textNotifItemCount;
-//    MenuItem settingsButton;
-
     int mNotifItemCount = 10;
-
-//    ImageView listSettings;
-
     FloatingActionButton floatadd;
+    FloatingActionButton bottomsheet;
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR,year);
+        c.set(Calendar.MONTH,month);
+        c.set(Calendar.DAY_OF_MONTH,date);
+        currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        b.date = currentDate;
+    }
+    DatabaseReference mDatabase;
+    FirebaseDatabase db;
+    FirebaseAuth fa;
+    FirebaseUser curr_user;
+    ImageView listSettings;
+    ImageView calendar_date;
+    String mail;
+
 
 
 
@@ -54,9 +93,6 @@ public class HomeActivity extends AppCompatActivity {
         floatadd = findViewById(R.id.floatingadd);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-
-//        mAuth = FirebaseAuth.getInstance();
-//        sp = getSharedPreferences("autoLogin", Context.MODE_PRIVATE);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -82,20 +118,11 @@ public class HomeActivity extends AppCompatActivity {
                         break;
 
                     case R.id.logout:
-//
-//                        mAuth.signOut();
-//
-//                        SharedPreferences.Editor editor = sp.edit();
-//                        
-//                        editor.putInt("key", 0);
-//                        editor.apply();
-//
-//                        Intent logIntent = new Intent(getApplicationContext(), LogInActivity.class);
-//                        startActivity(logIntent);
 
-//                        startLogoutActivity();
-//                        FirebaseAuth.getInstance().signOut();
-
+                        FirebaseAuth.getInstance().signOut();
+                        Intent logIntent = new Intent(HomeActivity.this, LogInActivity.class);
+                        startActivity(logIntent);
+                        Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_SHORT).show();
                         break;
 
 
@@ -106,18 +133,33 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        fa = FirebaseAuth.getInstance();
+        curr_user = fa.getCurrentUser();
+        mail = curr_user.getUid();
 
-//
+        userId = (UUID) UUID.randomUUID();
+//        recyclerView = findViewById(R.id.tasks);
+        bottomsheet = findViewById(R.id.list_settings);
+        recyclerView = findViewById(R.id.recycler_tasks);
+        mDatabase = FirebaseDatabase.getInstance().getReference("users/"+mail);
+        calendar_date = findViewById(R.id.task_date);
 
-//        settingsButton = findViewById(R.id.settings);
-//        try {
-//            settingsButton.setOnMenuItemClickListener(menuItem -> {
-//                startSettingsActivity();
-//                return true;
-//            });
-//        } catch (NullPointerException e){
-//
-//        }
+        bottomsheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                showDialog();
+                BottomSheet bottomSheet = new BottomSheet();
+                bottomSheet.show(getSupportFragmentManager(),"Tag");
+            }
+        });
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        list = new ArrayList<Model>();
+        myAdapter = new MyAdapter(HomeActivity.this,list);
+        recyclerView.setAdapter(myAdapter);
+        EventChangeListner();
+
 
         floatadd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,41 +176,49 @@ public class HomeActivity extends AppCompatActivity {
         toggle.syncState();
     }
 
-//    public void startLogoutActivity() {
-//        new AlertDialog.Builder(this).setIcon(R.drawable.ic_baseline_info_24)
-//                .setTitle("Logout").setMessage("Are you sure you wish to logout?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                SharedPreferences.Editor editor = sp.edit();
-//                editor.putInt("key", 0);
-//                editor.apply();
-//
-//                Intent logIntent = new Intent(getApplicationContext(), LogInActivity.class);
-//                startActivity(logIntent);
-//            }
-//
-//        }).setNegativeButton("No", null).show();
-//    }
+    private void EventChangeListner() {
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
 
+                    Log.d("Nnn", ""+dataSnapshot.getValue());
 
-//    private void setNavigationViewListener() {
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
-//    }
+                    Model model=  dataSnapshot.getValue(Model.class);
+                    list.add(model);
+                }
+                myAdapter.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.settings:
-//                Toast.makeText(HomeActivity.this, "Is this working", Toast.LENGTH_SHORT).show();
-//                Intent settingsIntent = new Intent(HomeActivity.this, PreferencesActivity.class);
-//                startActivity(settingsIntent);
-//                break;
-//        }
-//        drawer.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
+            }
+        });
+        for (int i=0;i<list.size();i++){
+            Log.d("FFF",list.get(i).TaskName);
+        }
+    }
+
+    private void showDialog() {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottomsheetlayout);
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+    }
+    public void writeNewUser(UUID userId, String name, String taskdesc) {
+//        user newuser = new user();
+        mDatabase.child("users").child(mail).child(userId.toString()).child("taskname").setValue(name);
+
+    }
+
 
     public void startSettingsActivity() {
         Intent settingsIntent = new Intent(HomeActivity.this, PreferencesActivity.class);
@@ -186,7 +236,6 @@ public class HomeActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
         }
         else {
-//            super.onBackPressed();
               this.finishAffinity();
         }
     }
@@ -240,7 +289,5 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
 }

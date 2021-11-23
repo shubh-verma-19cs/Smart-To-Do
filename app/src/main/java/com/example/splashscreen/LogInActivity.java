@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -21,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
 
@@ -29,7 +29,7 @@ public class LogInActivity extends AppCompatActivity {
     EditText userEdit, passEdit;
     TextView registerView, forgetPass,divert_reg;
     CheckBox checkBox;
-    int autoSave;
+    FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,30 +47,15 @@ public class LogInActivity extends AppCompatActivity {
         Button loginButton = (Button) findViewById(R.id.loginbtn);
         forgetPass = (TextView) findViewById(R.id.forgotpass);
         divert_reg = (TextView) findViewById(R.id.divert_to_reg);
-        checkBox= (CheckBox) findViewById(R.id.chck1);
-        FirebaseAuth mAuth;
 
-        SharedPreferences sp = getSharedPreferences("login",MODE_PRIVATE);
 
-        //if(sp.getBoolean("logged",false)){
-        //    startHomePage();
-        //}
-        int j = sp.getInt("key", 0);
-        if(j > 0){
-            startHomePage();
-        }
-
+        checkBox = (CheckBox) findViewById(R.id.chck1);
         // ...
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                if(userEdit.getText().toString().equals("admin") &&
-//                   passEdit.getText().toString().equals("Admin")){
-//                        startHomePage();
-//                }
                 String email = userEdit.getText().toString().trim();
                 String pass = passEdit.getText().toString().trim();
                 if(TextUtils.isEmpty(email)){
@@ -80,20 +65,12 @@ public class LogInActivity extends AppCompatActivity {
                     passEdit.setError("Password is required");
                 }
 
-                //sp.edit().putBoolean("logged",true).apply();
-
                 mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(LogInActivity.this,"Logged In Successfully",Toast.LENGTH_SHORT).show();
-
-                            autoSave = 1;
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putInt("key", autoSave);
-                            editor.apply();
                             startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-
                         }
                         else{
                             Toast.makeText(LogInActivity.this,"Error !!"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
@@ -120,13 +97,6 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-//        registerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startRegisterPage();
-//            }
-//        });
-
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -141,7 +111,6 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void startForgetPage() {
@@ -152,6 +121,23 @@ public class LogInActivity extends AppCompatActivity {
     public void startRegisterPage() {
         Intent regIntent = new Intent(LogInActivity.this, RegisterActivity.class);
         startActivity(regIntent);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            startHomePage();
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        finishAffinity();
+        finish();
     }
 
     public void startHomePage() {

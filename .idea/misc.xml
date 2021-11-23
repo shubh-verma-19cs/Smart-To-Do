@@ -16,6 +16,7 @@
         <entry key="app/src/main/res/drawable/add.xml" value="0.24316239316239316" />
         <entry key="app/src/main/res/drawable/badge_background.xml" value="0.10740740740740741" />
         <entry key="app/src/main/res/drawable/circleimage.xml" value="0.29873417721518986" />
+        <entry key="app/src/main/res/drawable/dialog_bg.xml" value="0.17721518987341772" />
         <entry key="app/src/main/res/drawable/google.xml" value="0.24444444444444444" />
         <entry key="app/src/main/res/drawable/google_background.xml" value="0.14027777777777778" />
         <entry key="app/src/main/res/drawable/google_icon_background.xml" value="0.14027777777777778" />
@@ -31,7 +32,7 @@
         <entry key="app/src/main/res/drawable/settings_gradient.xml" value="0.29873417721518986" />
         <entry key="app/src/main/res/layout/activity_forget_password.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.175" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_list_settings.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_log_in.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
@@ -40,6 +41,9 @@
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_register2.xml" value="0.23229166666666667" />
         <entry key="app/src/main/res/layout/activity_task_settings.xml" value="0.23368055555555556" />
+        <entry key="app/src/main/res/layout/bottomsheetlayout.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item.xml" value="0.15760869565217392" />
+        <entry key="app/src/main/res/layout/layout_dialog.xml" value="0.15760869565217392" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.67" />
         <entry key="app/src/main/res/layout/notification_icon_action_bar.xml" value="0.5" />
         <entry key="app/src/main/res/layout/preferences_list_item.xml" value="0.33" />
