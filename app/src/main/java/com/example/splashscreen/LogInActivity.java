@@ -59,26 +59,26 @@ public class LogInActivity extends AppCompatActivity {
                 String email = userEdit.getText().toString().trim();
                 String pass = passEdit.getText().toString().trim();
                 if(TextUtils.isEmpty(email)){
-                    userEdit.setError("Password is required");
+                    userEdit.setError("Email id is required");
                 }
-                if(TextUtils.isEmpty(pass)){
+               else if(TextUtils.isEmpty(pass)){
                     passEdit.setError("Password is required");
                 }
 
-                mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(LogInActivity.this,"Logged In Successfully",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+              else{
+                    mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(LogInActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                            } else {
+                                Toast.makeText(LogInActivity.this, "Error !!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else{
-                            Toast.makeText(LogInActivity.this,"Error !!"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    });
 
-
+                }
             }
 
 

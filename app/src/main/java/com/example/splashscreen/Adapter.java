@@ -3,6 +3,7 @@ package com.example.splashscreen;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     ArrayList optionImg, optionName, optionDesc;
     Context context;
 
+
     public Adapter(Context context, ArrayList optionImg, ArrayList optionName, ArrayList optionDesc){
         this.context = context;
         this.optionImg = optionImg;
@@ -33,6 +35,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.preferences_list_item, parent, false);
+
+
         Adapter.ViewHolder viewHolder = new Adapter.ViewHolder(view, context);
 
         return viewHolder;
@@ -57,6 +61,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         ImageView images;
         TextView text, desc;
 
+        SharedPreferences preferences = context.getSharedPreferences("sharedPrefs",Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+        final boolean isDarkModeOn = preferences.getBoolean("isDarkModeOn",false);
+
+
         public ViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -64,6 +73,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             text = itemView.findViewById(R.id.optionName);
             desc = itemView.findViewById(R.id.optionDesc);
             text.setOnClickListener(this);
+
+
+
         }
 
         @Override
@@ -83,7 +95,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     Toast.makeText(context, "text size", Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
-                    showThemeSelection();
+//                    showThemeSelection();
+
+                    if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_NO) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        desc.setText("NIGHT MODE");
+                    }
+                    else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        desc.setText("LIGHT MODE");
+                    }
                     Toast.makeText(context, "theme", Toast.LENGTH_SHORT).show();
                     break;
                 case 5:
@@ -98,28 +119,43 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             }
         }
 
-        public void showThemeSelection() {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-            alertDialog.setTitle("Theme");
-            String[] items = {"Light", "Dark"};
-            alertDialog.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    switch (i) {
-                        case 0:
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                            Toast.makeText(context, "Light theme", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 1:
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                            Toast.makeText(context, "Dark theme", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }
-            }).setPositiveButton("Set theme",null);
-            AlertDialog alert = alertDialog.create();
-            alert.setCanceledOnTouchOutside(true);
-            alert.show();
-        }
+//        public void showThemeSelection() {
+//            int choice;
+////            if (preferences.get)
+//            if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_NO) {
+//                choice = 0;
+//            }
+//            else
+//                choice = 1;
+//            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+//            alertDialog.setTitle("Theme");
+//            String[] items = {"Light", "Dark"};
+//            alertDialog.setSingleChoiceItems(items, choice, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    switch (i) {
+//                        case 0:
+//
+//                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//
+//                            editor.putBoolean("isDarkModeOn",false);
+//                            Toast.makeText(context, "Light theme", Toast.LENGTH_SHORT).show();
+//                            break;
+//                        case 1:
+//                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                            editor.putBoolean("isDarkModeOn",true);
+//                            Toast.makeText(context, "Dark theme", Toast.LENGTH_SHORT).show();
+//                            break;
+//                    }
+//                }
+//            }).setPositiveButton("Set theme",null);
+//            AlertDialog alert = alertDialog.create();
+//            alert.setCanceledOnTouchOutside(true);
+//            try {
+//                alert.show();
+//            } catch (){
+//
+//            }
+//        }
     }
 }

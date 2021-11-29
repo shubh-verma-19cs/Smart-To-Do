@@ -38,7 +38,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             >
 
 
@@ -48,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:nestedScrollingEnabled="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_marginTop="90dp"/>
+                android:layout_marginTop="80dp"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floatingadd"
@@ -77,6 +77,22 @@
                 app:background="?attr/colorPreferenceLine"
                 app:tint="?attr/colorOnPrimary"
                 android:backgroundTint="?attr/colorOnSecondary"
+                />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/notif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="140dp"
+                android:layout_marginBottom="75dp"
+                android:elevation="2dp"
+                android:src="@drawable/notif_icon"
+                app:background="?attr/colorPreferenceLine"
+
+                app:tint="?attr/colorOnPrimary"
+                android:backgroundTint="?attr/colorPreferenceLine"
                 />
 
             </RelativeLayout>

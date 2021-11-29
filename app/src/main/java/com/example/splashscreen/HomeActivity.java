@@ -6,19 +6,28 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -48,6 +57,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class HomeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -69,18 +79,22 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     int mNotifItemCount = 10;
     FloatingActionButton floatadd;
     FloatingActionButton bottomsheet;
+    FloatingActionButton dateButton;
+    Calendar c;
 
-
-
+    private static Context mContext;
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int date) {
-        Calendar c = Calendar.getInstance();
+        c = Calendar.getInstance();
         c.set(Calendar.YEAR,year);
         c.set(Calendar.MONTH,month);
         c.set(Calendar.DAY_OF_MONTH,date);
         currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
         b.date = currentDate;
+        b.nday = String.valueOf(date);
+        b.nmonth = String.valueOf(month);
+        b.nyear = String.valueOf(year);
     }
     DatabaseReference mDatabase;
     FirebaseDatabase db;
@@ -90,6 +104,7 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     ImageView calendar_date;
     String mail;
 
+    SharedPreferences preferences;
 
 
 
@@ -97,12 +112,35 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        mContext = getApplicationContext();
+        createNotificationChannel();
 
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        if (!preferences.getBoolean("firstTime",false)){
+//            Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+//            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+//
+//            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTimeInMillis(System.currentTimeMillis());
+//            calendar.set(Calendar.HOUR_OF_DAY, 19);
+//            calendar.set(Calendar.MINUTE, 29);
+//            calendar.set(Calendar.SECOND, 1);
+//
+//
+//            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+//                    AlarmManager.INTERVAL_DAY, pendingIntent);
+//
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putBoolean("firstTime", true);
+//            editor.apply();
+//        }
 
         sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z");
         currentDateandTime = sdf.format(new Date());
-
-
+        dateButton = findViewById(R.id.notif);
         floatadd = findViewById(R.id.floatingadd);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -114,9 +152,9 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
                 int id = item.getItemId();
                 switch (id){
                     case R.id.nav_profile:
-                        Toast.makeText(HomeActivity.this, "Working", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(HomeActivity.this, PreferencesActivity.class);
-                        startActivity(i);
+                        Toast.makeText(HomeActivity.this, "Profile clicked", Toast.LENGTH_SHORT).show();
+                        Intent profileintent = new Intent(HomeActivity.this, ProfilePage.class);
+                        startActivity(profileintent);
                         break;
 //                    case R.id.team1:
 //
@@ -135,7 +173,7 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
                         FirebaseAuth.getInstance().signOut();
                         Intent logIntent = new Intent(HomeActivity.this, LogInActivity.class);
                         startActivity(logIntent);
-                        Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Logged out", Toast.LENGTH_SHORT).show();
                         break;
 
 
@@ -205,6 +243,8 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
 
                     Log.d("Nnn", ""+dataSnapshot.getValue());
+
+
 
                     Model model=  dataSnapshot.getValue(Model.class);
                     list.add(0,model);
@@ -297,6 +337,9 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
     private void setupBadge() {
         if(textNotifItemCount != null){
             if (mNotifItemCount == 0){
@@ -311,5 +354,71 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
             }
         }
     }
+
+
+
+    public void setAlarm( String day, String month, String year, String hour, String minute) {
+//        Context c = getApplicationContext();
+
+        Intent intent = new Intent(mContext, DeviceBootReceiver.class);
+        intent.setAction(DeviceBootReceiver.ACTION_ALARM);
+
+        Calendar now = Calendar.getInstance();
+
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext,
+                ((int) now.getTimeInMillis()), intent, 0);
+
+        Toast.makeText(mContext, String.valueOf(now.getTimeInMillis()), Toast.LENGTH_SHORT).show();
+
+        AlarmManager alarmManager = (AlarmManager) mContext.
+                getSystemService(mContext.ALARM_SERVICE);
+
+//        Calendar c = Calendar.getInstance();
+//        c.add(Calendar.MINUTE, 1);
+//        long afterTwoMinutes = c.getTimeInMillis();
+//
+//        alarmManager.set(AlarmManager.RTC, afterTwoMinutes, alarmIntent);
+
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.YEAR, Integer.parseInt(String.valueOf(year)));
+        startTime.set(Calendar.MONTH, Integer.parseInt(String.valueOf(month))-1);
+        startTime.set(Calendar.DATE, Integer.parseInt(String.valueOf(day)));
+        startTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(String.valueOf(hour)));
+        startTime.set(Calendar.MINUTE, Integer.parseInt(String.valueOf(minute)));
+        startTime.set(Calendar.SECOND, 1);
+
+// get a Calendar at the current time
+
+//        Toast.makeText(getApplicationContext(), "Current time:"+now.toString(), Toast.LENGTH_SHORT).show();
+        long time;
+        if (now.before(startTime)) {
+            // it's not 14:00 yet, start today
+            time = startTime.getTimeInMillis();
+        } else {
+            // start 14:00 tomorrow
+            startTime.add(Calendar.DATE, 1);
+            time = startTime.getTimeInMillis();
+        }
+
+        alarmManager.setExact(AlarmManager.RTC, time, alarmIntent);
+
+
+
+
+    }
+
+    private void createNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = "NotifChannel";
+            String description = "Channel for notif reminder";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notifID",name,importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 
 }

@@ -63,28 +63,29 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(email)){
                     regMail.setError("Email is required");
                 }
-                if(TextUtils.isEmpty(username)){
+                else if(TextUtils.isEmpty(username)){
                     regUser.setError("Username is required");
                 }
-                if(TextUtils.isEmpty(password)){
+                else if(TextUtils.isEmpty(password)){
                     regPass.setError("Password is required");
                 }
-                if(password.length()<6){
+                else if(password.length()<6){
                     regPass.setError("Password length should be greater than 6 characters !!");
                 }
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(RegisterActivity.this,"User Created",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                else {
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this, "User Created", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "Error !!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else{
-                            Toast.makeText(RegisterActivity.this,"Error !!"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                startLoginPage();
+                    });
+                }
+//                startLoginPage();
             }
         });
 
@@ -112,13 +113,13 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
-    public void startLoginPage(){
-        Intent regIntent = new Intent(RegisterActivity.this,LogInActivity.class);
-        regIntent.putExtra("Reg_Username",String.valueOf(regUser));
-        regIntent.putExtra("Reg_mail",String.valueOf(regMail));
-        regIntent.putExtra("Reg_Password",String.valueOf(regPass));
-        startActivity(regIntent);
-    }
+//    public void startLoginPage(){
+//        Intent regIntent = new Intent(RegisterActivity.this,LogInActivity.class);
+//        regIntent.putExtra("Reg_Username",String.valueOf(regUser));
+//        regIntent.putExtra("Reg_mail",String.valueOf(regMail));
+//        regIntent.putExtra("Reg_Password",String.valueOf(regPass));
+//        startActivity(regIntent);
+//    }
     public void startLogin(){
         Intent regIntent = new Intent(RegisterActivity.this,LogInActivity.class);
         startActivity(regIntent);

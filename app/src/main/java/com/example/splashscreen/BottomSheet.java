@@ -59,7 +59,7 @@ public class BottomSheet extends BottomSheetDialogFragment  {
 
 
     UUID userId;
-    String date;
+    static String date;
     private DatabaseReference mDatabase;
     static String Time;
     ImageView time;
@@ -71,6 +71,8 @@ public class BottomSheet extends BottomSheetDialogFragment  {
     String mail;
     FirebaseUser curr_user;
 
+    int nhour, nmin;
+    static String nday, nmonth, nyear;
 
     TextView dateTV, timeTV;
 
@@ -94,6 +96,8 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         Button Savebtn = view1.findViewById(R.id.task_save);
         ImageView calendar_date = view1.findViewById(R.id.task_date);
         ImageView Time = view1.findViewById(R.id.task_time);
+
+        homeActivity = new HomeActivity();
 
         dateTV = view1.findViewById(R.id.dateTV);
         timeTV = view1.findViewById(R.id.timeTV);
@@ -119,9 +123,6 @@ public class BottomSheet extends BottomSheetDialogFragment  {
             public void onClick(View view) {
                 DialogFragment datepicker = new DatePickerFragment();
                 datepicker.show(getActivity().getSupportFragmentManager(), "Date Picker");
-
-
-
             }
         });
         ImageView time = view1.findViewById(R.id.task_time);
@@ -143,6 +144,7 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                         tmin = min;
                         String time = thour+":"+tmin;
                         SimpleDateFormat f24hour =  new SimpleDateFormat("HH:mm");
+//                        SimpleDateFormat fHour = new SimpleDateFormat("HH");
                         try{
                             Date date = f24hour.parse(time);
                             SimpleDateFormat f12hour = new SimpleDateFormat("HH:mm aa");
@@ -177,6 +179,8 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                 if(Task_Time==null){
                     Task_Time = " ";
                 }
+
+                homeActivity.setAlarm( nday, nmonth, nyear, String.valueOf(thour), String.valueOf(tmin));
 //                Log.d("TASKTIME",Task_Time);
                 if(!TextUtils.isEmpty(taskname.getText().toString().trim())){
                     tname = taskname.getText().toString().trim();
@@ -229,6 +233,7 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                 }
                 Animation hyperspaceJumpAnimation1 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_bottom);
                 view1.startAnimation(hyperspaceJumpAnimation1);
+                date = "";
 //                startHomePage();
             }
         });
@@ -348,5 +353,9 @@ public class BottomSheet extends BottomSheetDialogFragment  {
     }
 
 
+
+    public String sendCurrentDate(){
+        return currentDateTime;
+    }
 
 }
