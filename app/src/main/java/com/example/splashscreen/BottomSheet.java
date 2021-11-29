@@ -273,17 +273,17 @@ public class BottomSheet extends BottomSheetDialogFragment  {
 //        usermap.put("Description",taskdesc);
 //        usermap.put("Date",taskdate);
 //        usermap.put("Time",Time);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
     }
     public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String meet){
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("meet").setValue(meet);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("meet").setValue(meet);
     }
     public void startHomePage() {
 
@@ -302,60 +302,55 @@ public class BottomSheet extends BottomSheetDialogFragment  {
 //        usermap.put("meetlink",meet);
 //        usermap.put("tasklink",ltask);
 //        mDatabase.child("users").child(userId.toString()).setValue(usermap);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("meet").setValue(meet);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("ltask").setValue(ltask);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("meet").setValue(meet);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("ltask").setValue(ltask);
 
     }
     public void mtwriteNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time){
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
     }
     public void mwriteNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String ltask){
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("ltask").setValue(ltask);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("ltask").setValue(ltask);
     }
     public void mtdwriteNewUser(String currentDateTime, String name,String taskdate,String Time){
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
 //        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
     }
     public void mdwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String ltask){
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
 //        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("ltask").setValue(ltask);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("ltask").setValue(ltask);
     }
     public void dwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String meet,String ltask){
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
 //        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("meet").setValue(meet);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("ltask").setValue(ltask);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("meet").setValue(meet);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("ltask").setValue(ltask);
     }
     public void dwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String meet){
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
 //        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
-        mDatabase.child("users").child(mail).child(currentDateTime).child("meet").setValue(meet);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("meet").setValue(meet);
     }
 
-
-
-    public String sendCurrentDate(){
-        return currentDateTime;
-    }
 
 }

@@ -53,6 +53,7 @@
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.67" />
         <entry key="app/src/main/res/layout/notification_icon_action_bar.xml" value="0.5" />
         <entry key="app/src/main/res/layout/preferences_list_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/profilecam_bottomsheet_layout.xml" value="0.25815217391304346" />
         <entry key="app/src/main/res/layout/settings_activity.xml" value="0.23368055555555556" />
         <entry key="app/src/main/res/layout/task_settings_items.xml" value="0.5" />
         <entry key="app/src/main/res/menu/drawer_menu.xml" value="0.5" />

@@ -1,19 +1,24 @@
 package com.example.splashscreen;
 
+import static android.os.Build.VERSION.SDK_INT;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -25,10 +30,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -41,6 +50,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -96,7 +106,7 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         b.nmonth = String.valueOf(month);
         b.nyear = String.valueOf(year);
     }
-    DatabaseReference mDatabase;
+    DatabaseReference mDatabase,databaseReference;
     FirebaseDatabase db;
     FirebaseAuth fa;
     FirebaseUser curr_user;
@@ -112,8 +122,54 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+////        boolean checkPermission(){
+//            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.R)
+//            {
+////                return Environment.isExternalStorageManager();
+//            }else{
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+//                Uri uri = Uri.fromParts("package", getPackageName(), null);
+//                intent.setData(uri);
+//                startActivity(intent);
+//            }
+//        }
+
+        boolean haspermission=(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED);
+        if(!haspermission)
+        {
+            String[] permissionarr= {Manifest.permission.READ_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(this,permissionarr, PackageManager.PERMISSION_GRANTED);
+//            ActivityCompat.requestPermissions(this,String[] {Manifest.permission.ACCESS_FINE_LOCATION},PackageManager.PERMISSION_GRANTED);
+        }
+
+        boolean haspermission2= (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED);
+        if(!haspermission2)
+        {
+            String[] permissionarr2= {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(this,permissionarr2,PackageManager.PERMISSION_GRANTED);
+//            ActivityCompat.requestPermissions(this,String[] {Manifest.permission.ACCESS_FINE_LOCATION},PackageManager.PERMISSION_GRANTED);
+        }
+
+//        if (SDK_INT >= Build.VERSION_CODES.R) {
+//            if (Environment.isExternalStorageManager()) {
+//                startActivity(new Intent(this, MainActivity.class));
+//            } else { //request for the permission
+//                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+//                Uri uri = Uri.fromParts("package", getPackageName(), null);
+//            }
+//        }
+
+//        boolean haspermission3= (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED);
+//        if(!haspermission3)
+//        {
+//            String[] permissionarr3= {Manifest.permission.MANAGE_EXTERNAL_STORAGE};
+//            ActivityCompat.requestPermissions(this,permissionarr3,PackageManager.PERMISSION_GRANTED);
+////            ActivityCompat.requestPermissions(this,String[] {Manifest.permission.ACCESS_FINE_LOCATION},PackageManager.PERMISSION_GRANTED);
+//        }
+
         mContext = getApplicationContext();
-        createNotificationChannel();
+
 
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -145,7 +201,44 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
+
+        fa = FirebaseAuth.getInstance();
+        curr_user = fa.getCurrentUser();
+        mail = curr_user.getUid();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        View hView =  navigationView.getHeaderView(0);
+        ImageView profileimage= (ImageView) hView.findViewById(R.id.prof_img);
+        TextView profiletext=(TextView) hView.findViewById(R.id.nav_text);
+
+        if(curr_user != null) {
+            if (curr_user.getPhotoUrl() != null) {
+                Glide.with(this)
+                        .load(curr_user.getPhotoUrl())
+                        .into(profileimage);
+            }
+            else {
+                profileimage.  setImageResource(R.drawable.personprofile);
+            }
+        }
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(mail).child("UserName");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.i("Username profile", snapshot.getValue(String.class));
+                String username= snapshot.getValue(String.class).toString();
+                Log.d("useriner check",username);
+                profiletext.setText(username);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -187,15 +280,13 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
         });
 
-        fa = FirebaseAuth.getInstance();
-        curr_user = fa.getCurrentUser();
-        mail = curr_user.getUid();
+
 
         userId = (UUID) UUID.randomUUID();
 //        recyclerView = findViewById(R.id.tasks);
         bottomsheet = findViewById(R.id.list_settings);
         recyclerView = findViewById(R.id.recycler_tasks);
-        mDatabase = FirebaseDatabase.getInstance().getReference("users/"+mail);
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(mail).child("Tasks");
         calendar_date = findViewById(R.id.task_date);
 
         bottomsheet.setOnClickListener(new View.OnClickListener() {
@@ -229,6 +320,7 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        createNotificationChannel();
 
 
 
@@ -408,7 +500,7 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void createNotificationChannel(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (SDK_INT >= Build.VERSION_CODES.O){
             CharSequence name = "NotifChannel";
             String description = "Channel for notif reminder";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;

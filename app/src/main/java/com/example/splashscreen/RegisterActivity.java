@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,14 +21,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class RegisterActivity extends AppCompatActivity {
+    public static String User_name="Reg_username";
     EditText regUser,regMail,regPass;
     Button regBtn;
     TextView registerView;
     CheckBox checkBox;
+    String email, username,password;
 
+    FirebaseAuth firebaseAuth;
+    FirebaseUser currentUser;
+    DatabaseReference databaseReference;
+    String curuserID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,35 +66,43 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                String email = regMail.getText().toString().trim();
-                String username = regUser.getText().toString().trim();
-                String password = regPass.getText().toString().trim();
+                email = regMail.getText().toString().trim();
+                username = regUser.getText().toString().trim();
+                password = regPass.getText().toString().trim();
                 //trim -> removes extra spaces
                 if(TextUtils.isEmpty(email)){
                     regMail.setError("Email is required");
                 }
-                else if(TextUtils.isEmpty(username)){
+                if(TextUtils.isEmpty(username)){
                     regUser.setError("Username is required");
                 }
-                else if(TextUtils.isEmpty(password)){
+                if(TextUtils.isEmpty(password)){
                     regPass.setError("Password is required");
                 }
-                else if(password.length()<6){
+                if(password.length()<6){
                     regPass.setError("Password length should be greater than 6 characters !!");
                 }
-                else {
-                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(RegisterActivity.this, "User Created", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                            } else {
-                                Toast.makeText(RegisterActivity.this, "Error !!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(RegisterActivity.this,"User Created",Toast.LENGTH_SHORT).show();
+
+                            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                            senduserdata();
+
+                            firebaseAuth= FirebaseAuth.getInstance();
+                            currentUser = firebaseAuth.getCurrentUser();
+                            curuserID=currentUser.getUid();
+                            databaseReference = FirebaseDatabase.getInstance().getReference();
+
+                            databaseReference.child("users").child(curuserID).child("UserName").setValue(username);
                         }
-                    });
-                }
+                        else{
+                            Toast.makeText(RegisterActivity.this,"Error !!"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 //                startLoginPage();
             }
         });
@@ -113,13 +131,16 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
-//    public void startLoginPage(){
-//        Intent regIntent = new Intent(RegisterActivity.this,LogInActivity.class);
-//        regIntent.putExtra("Reg_Username",String.valueOf(regUser));
-//        regIntent.putExtra("Reg_mail",String.valueOf(regMail));
-//        regIntent.putExtra("Reg_Password",String.valueOf(regPass));
-//        startActivity(regIntent);
-//    }
+    public void senduserdata(){
+        Intent regIntent = new Intent(this,HomeActivity.class);
+        regIntent.putExtra(User_name,username);
+        regIntent.putExtra("Reg_mail",email);
+        regIntent.putExtra("Reg_Password",password);
+        startActivity(regIntent);
+
+        Log.d("username",username);
+
+    }
     public void startLogin(){
         Intent regIntent = new Intent(RegisterActivity.this,LogInActivity.class);
         startActivity(regIntent);
