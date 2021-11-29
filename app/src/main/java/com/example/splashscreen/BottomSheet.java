@@ -54,6 +54,7 @@ public class BottomSheet extends BottomSheetDialogFragment  {
     HomeActivity homeActivity;
     String currentDateTime;
     SimpleDateFormat sdf;
+    TaskSettings taskSettings;
 //    String currentDateandTime;
 
 
@@ -75,6 +76,7 @@ public class BottomSheet extends BottomSheetDialogFragment  {
     static String nday, nmonth, nyear;
 
     TextView dateTV, timeTV;
+    boolean checkBox;
 
 //    @Override
 //    public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -137,31 +139,27 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
-                    public void onTimeSet(TimePicker timePicker, int hour, int min) {
-                        thour = hour;
-                        tmin = min;
-                        String time = thour+":"+tmin;
-                        SimpleDateFormat f24hour =  new SimpleDateFormat("HH:mm");
-//                        SimpleDateFormat fHour = new SimpleDateFormat("HH");
-                        try{
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMin) {
+                        thour = selectedHour;
+                        tmin = selectedMin;
+                        String time = thour + ":" + tmin;
+                        SimpleDateFormat f24hour = new SimpleDateFormat("HH:mm");
+                        try {
                             Date date = f24hour.parse(time);
                             SimpleDateFormat f12hour = new SimpleDateFormat("HH:mm aa");
                             Task_Time = f12hour.format(date);
 
 
-                        }
-                        catch (ParseException e){
+                        } catch (ParseException e) {
                             e.printStackTrace();
                         }
                     }
-                },12,0,false);
-                timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                timePickerDialog.updateTime(thour,tmin);
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),onTimeSetListener,thour,tmin,false);
                 timePickerDialog.show();
             }
-
         });
 
         Savebtn.setOnClickListener(new View.OnClickListener() {
@@ -190,18 +188,20 @@ public class BottomSheet extends BottomSheetDialogFragment  {
 
                         if(!TextUtils.isEmpty(link_meet)){
                             if(!TextUtils.isEmpty(link_task)){
-                                writeNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_meet,""+link_task);
+                                taskSettings.tlink = link_task;
+                                writeNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_meet,""+link_task,checkBox);
                             }
                             else{
-                                writeNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_meet);
+                                writeNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_meet,checkBox);
                             }
                         }
                         else{
                             if(!TextUtils.isEmpty(link_task)){
-                                mwriteNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_task);
+                                taskSettings.tlink = link_task;
+                                mwriteNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_task,checkBox);
                             }
                             else{
-                                mtwriteNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time);
+                                mtwriteNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,checkBox);
                             }
                         }
                         Toast.makeText(getContext(),"Task Added Successfully",Toast.LENGTH_LONG).show();
@@ -210,18 +210,18 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                         tdesc = taskdesc.getText().toString().trim();
                         if(!TextUtils.isEmpty(link_meet)){
                             if(!TextUtils.isEmpty(link_task)){
-                                dwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_meet,""+link_task);
+                                dwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_meet,""+link_task,checkBox);
                             }
                             else{
-                                dwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_meet);
+                                dwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_meet,checkBox);
                             }
                         }
                         else{
                             if(!TextUtils.isEmpty(link_task)){
-                                mdwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_task);
+                                mdwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_task,checkBox);
                             }
                             else{
-                                mtdwriteNewUser(currentDateTime,tname,""+date,""+Task_Time);
+                                mtdwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,checkBox);
                             }
                         }
                         Toast.makeText(getContext(),"Task Added Successfully",Toast.LENGTH_LONG).show();
@@ -233,7 +233,6 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                 }
                 Animation hyperspaceJumpAnimation1 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_bottom);
                 view1.startAnimation(hyperspaceJumpAnimation1);
-                date = "";
 //                startHomePage();
             }
         });
@@ -267,23 +266,24 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         dialog_link.show(getActivity().getSupportFragmentManager(), "Edit Task Details");
     }
 
-    public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time) {
+    public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,boolean checkBox) {
 //        HashMap<String ,String > usermap = new HashMap<>();
 //        usermap.put("TaskName",name);
 //        usermap.put("Description",taskdesc);
 //        usermap.put("Date",taskdate);
 //        usermap.put("Time",Time);
-        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
-        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
     }
-    public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String meet){
-        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
-        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
-        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
-        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
-        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("meet").setValue(meet);
+    public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String meet,boolean checkBox){
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskName").setValue(name);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Description").setValue(taskdesc);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("TaskDate").setValue(taskdate);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("meet").setValue(meet);
+        mDatabase.child("users").child(mail).child(currentDateTime).child("checkboxStatus").setValue(checkBox);
     }
     public void startHomePage() {
 
@@ -293,7 +293,7 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         startActivity(logIntent);
 
     }
-    public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String meet,String ltask){
+    public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String meet,String ltask,boolean checkBox){
 //        HashMap<String ,String > usermap = new HashMap<>();
 //        usermap.put("TaskName",name);
 //        usermap.put("Description",taskdesc);
@@ -308,43 +308,49 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("meet").setValue(meet);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("ltask").setValue(ltask);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("checkboxStatus").setValue(checkBox);
 
     }
-    public void mtwriteNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time){
+    public void mtwriteNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,boolean checkBox){
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("checkboxStatus").setValue(checkBox);
     }
-    public void mwriteNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String ltask){
+    public void mwriteNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String ltask,boolean checkBox){
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("ltask").setValue(ltask);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("checkboxStatus").setValue(checkBox);
     }
-    public void mtdwriteNewUser(String currentDateTime, String name,String taskdate,String Time){
+    public void mtdwriteNewUser(String currentDateTime, String name,String taskdate,String Time,boolean checkBox){
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
 //        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("checkboxStatus").setValue(checkBox);
     }
-    public void mdwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String ltask){
+    public void mdwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String ltask,boolean checkBox){
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
 //        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("ltask").setValue(ltask);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("checkboxStatus").setValue(checkBox);
     }
-    public void dwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String meet,String ltask){
+    public void dwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String meet,String ltask,boolean checkBox){
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
 //        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Time").setValue(Time);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("meet").setValue(meet);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("ltask").setValue(ltask);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("checkboxStatus").setValue(checkBox);
     }
-    public void dwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String meet){
+    public void dwriteNewUser(String currentDateTime, String name,String taskdate,String Time,String meet,boolean checkBox){
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
 //        mDatabase.child("users").child(mail).child(userId.toString()).child("Description").setValue(taskdesc);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
@@ -352,5 +358,8 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("meet").setValue(meet);
     }
 
+    public String sendCurrentDate(){
+        return currentDateTime;
+    }
 
 }

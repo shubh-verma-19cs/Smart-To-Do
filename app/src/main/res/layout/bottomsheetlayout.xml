@@ -31,7 +31,7 @@
         android:textColor="@color/black"
         android:hint="Description"
         android:textSize="14dp"
-    />
+        />
 
     <TextView
         android:id="@+id/dateTV"
@@ -69,15 +69,7 @@
         android:layout_marginLeft="50dp"
 
         android:src="@drawable/clock" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/Task_Desc"
-        android:layout_marginTop="25dp"
-        android:id="@+id/task_link"
-        android:layout_marginLeft="90dp"
 
-        android:src="@drawable/link" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,4 +81,14 @@
         android:textStyle="bold"
         android:id="@+id/task_save"
         />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Task_Desc"
+        android:layout_marginTop="25dp"
+        android:id="@+id/task_link"
+        android:layout_marginLeft="90dp"
+
+        android:src="@drawable/link" />
 </RelativeLayout>
+

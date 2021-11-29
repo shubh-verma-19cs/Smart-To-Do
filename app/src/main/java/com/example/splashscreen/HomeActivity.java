@@ -76,6 +76,7 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     RecyclerView recyclerView;
     MyAdapter myAdapter;
     ArrayList<Model> list;
+    static ArrayList<String> Task_Id;
     UUID userId;
     String currentDate;
 
@@ -123,24 +124,11 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-////        boolean checkPermission(){
-//            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.R)
-//            {
-////                return Environment.isExternalStorageManager();
-//            }else{
-//                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-//                Uri uri = Uri.fromParts("package", getPackageName(), null);
-//                intent.setData(uri);
-//                startActivity(intent);
-//            }
-//        }
-
         boolean haspermission=(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED);
         if(!haspermission)
         {
             String[] permissionarr= {Manifest.permission.READ_EXTERNAL_STORAGE};
             ActivityCompat.requestPermissions(this,permissionarr, PackageManager.PERMISSION_GRANTED);
-//            ActivityCompat.requestPermissions(this,String[] {Manifest.permission.ACCESS_FINE_LOCATION},PackageManager.PERMISSION_GRANTED);
         }
 
         boolean haspermission2= (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED);
@@ -148,56 +136,18 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         {
             String[] permissionarr2= {Manifest.permission.WRITE_EXTERNAL_STORAGE};
             ActivityCompat.requestPermissions(this,permissionarr2,PackageManager.PERMISSION_GRANTED);
-//            ActivityCompat.requestPermissions(this,String[] {Manifest.permission.ACCESS_FINE_LOCATION},PackageManager.PERMISSION_GRANTED);
         }
-
-//        if (SDK_INT >= Build.VERSION_CODES.R) {
-//            if (Environment.isExternalStorageManager()) {
-//                startActivity(new Intent(this, MainActivity.class));
-//            } else { //request for the permission
-//                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-//                Uri uri = Uri.fromParts("package", getPackageName(), null);
-//            }
-//        }
-
-//        boolean haspermission3= (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED);
-//        if(!haspermission3)
-//        {
-//            String[] permissionarr3= {Manifest.permission.MANAGE_EXTERNAL_STORAGE};
-//            ActivityCompat.requestPermissions(this,permissionarr3,PackageManager.PERMISSION_GRANTED);
-////            ActivityCompat.requestPermissions(this,String[] {Manifest.permission.ACCESS_FINE_LOCATION},PackageManager.PERMISSION_GRANTED);
-//        }
 
         mContext = getApplicationContext();
 
 
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        if (!preferences.getBoolean("firstTime",false)){
-//            Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-//
-//            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTimeInMillis(System.currentTimeMillis());
-//            calendar.set(Calendar.HOUR_OF_DAY, 19);
-//            calendar.set(Calendar.MINUTE, 29);
-//            calendar.set(Calendar.SECOND, 1);
-//
-//
-//            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-//                    AlarmManager.INTERVAL_DAY, pendingIntent);
-//
-//            SharedPreferences.Editor editor = preferences.edit();
-//            editor.putBoolean("firstTime", true);
-//            editor.apply();
-//        }
 
         sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z");
         currentDateandTime = sdf.format(new Date());
-        dateButton = findViewById(R.id.notif);
-        floatadd = findViewById(R.id.floatingadd);
+//        dateButton = findViewById(R.id.notif);
+//        floatadd = findViewById(R.id.floatingadd);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
@@ -205,6 +155,8 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         fa = FirebaseAuth.getInstance();
         curr_user = fa.getCurrentUser();
         mail = curr_user.getUid();
+
+        Task_Id = new ArrayList<>();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -249,13 +201,6 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
                         Intent profileintent = new Intent(HomeActivity.this, ProfilePage.class);
                         startActivity(profileintent);
                         break;
-//                    case R.id.team1:
-//
-//                        break;
-//                    case R.id.team2:
-//                        break;
-//                    case R.id.nav_new_team:
-//                        break;
                     case R.id.settings:
                         Intent i1 = new Intent(HomeActivity.this, PreferencesActivity.class);
                         startActivity(i1);
@@ -283,7 +228,6 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
 
         userId = (UUID) UUID.randomUUID();
-//        recyclerView = findViewById(R.id.tasks);
         bottomsheet = findViewById(R.id.list_settings);
         recyclerView = findViewById(R.id.recycler_tasks);
         mDatabase = FirebaseDatabase.getInstance().getReference("users").child(mail).child("Tasks");
@@ -306,12 +250,12 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         EventChangeListner();
 
 
-        floatadd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startListSettings();
-            }
-        });
+//        floatadd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startListSettings();
+//            }
+//        });
 
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -332,12 +276,11 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+                Task_Id.clear();
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
 
-                    Log.d("Nnn", ""+dataSnapshot.getValue());
-
-
-
+                    Log.d("Nnn", ""+dataSnapshot.getKey());
+                    Task_Id.add(dataSnapshot.getKey());
                     Model model=  dataSnapshot.getValue(Model.class);
                     list.add(0,model);
                 }
@@ -349,9 +292,9 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
             }
         });
-        for (int i=0;i<list.size();i++){
-            Log.d("FFF",list.get(i).TaskName);
-        }
+//        for (int i=0;i<list.size();i++){
+//            Log.d("FFF",list.get(i).TaskName);
+//        }
     }
 
     private void showDialog() {
@@ -369,7 +312,7 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     }
     public void writeNewUser(String currentDateandTime, String name, String taskdesc) {
 //        user newuser = new user();
-        mDatabase.child("users").child(mail).child(currentDateandTime).child("taskname").setValue(name);
+        mDatabase.child("users").child(mail).child("Tasks").child(currentDateandTime).child("taskname").setValue(name);
 
     }
 
@@ -465,11 +408,6 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         AlarmManager alarmManager = (AlarmManager) mContext.
                 getSystemService(mContext.ALARM_SERVICE);
 
-//        Calendar c = Calendar.getInstance();
-//        c.add(Calendar.MINUTE, 1);
-//        long afterTwoMinutes = c.getTimeInMillis();
-//
-//        alarmManager.set(AlarmManager.RTC, afterTwoMinutes, alarmIntent);
 
         Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.YEAR, Integer.parseInt(String.valueOf(year)));
@@ -479,15 +417,10 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         startTime.set(Calendar.MINUTE, Integer.parseInt(String.valueOf(minute)));
         startTime.set(Calendar.SECOND, 1);
 
-// get a Calendar at the current time
-
-//        Toast.makeText(getApplicationContext(), "Current time:"+now.toString(), Toast.LENGTH_SHORT).show();
         long time;
         if (now.before(startTime)) {
-            // it's not 14:00 yet, start today
             time = startTime.getTimeInMillis();
         } else {
-            // start 14:00 tomorrow
             startTime.add(Calendar.DATE, 1);
             time = startTime.getTimeInMillis();
         }

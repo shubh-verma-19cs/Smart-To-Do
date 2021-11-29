@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 
@@ -35,7 +36,8 @@ public class Dialog_Link extends AppCompatDialogFragment {
 //                meetlink = view.findViewById(R.id.MeetLink);
                 BottomSheet b = new BottomSheet();
 //                b.link_meet = meetlink.toString().trim();
-                b.link_task = tasklink.toString().trim();
+                b.link_task = tasklink.getText().toString().trim();
+//                Log.d("TaskLink", tasklink.getText().toString().trim());
 
             }
         });

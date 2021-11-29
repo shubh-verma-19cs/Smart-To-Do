@@ -50,8 +50,22 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_marginTop="80dp"/>
 
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:id="@+id/floatingadd"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:layout_marginBottom="75dp"-->
+<!--                android:elevation="2dp"-->
+<!--                android:src="@drawable/add"-->
+<!--                app:background="?attr/colorPreferenceLine"-->
+<!--                app:tint="?attr/colorOnPrimary"-->
+<!--                android:backgroundTint="?attr/colorPreferenceLine"-->
+<!--                />-->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingadd"
+                android:id="@+id/list_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -62,38 +76,24 @@
                 android:src="@drawable/add"
                 app:background="?attr/colorPreferenceLine"
                 app:tint="?attr/colorOnPrimary"
-                android:backgroundTint="?attr/colorPreferenceLine"
-                />
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/list_settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="80dp"
-                android:layout_marginBottom="75dp"
-                android:elevation="2dp"
-                android:src="@drawable/add"
-                app:background="?attr/colorPreferenceLine"
-                app:tint="?attr/colorOnPrimary"
-                android:backgroundTint="?attr/colorOnSecondary"
+                android:backgroundTint="#FFC107"
                 />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/notif"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="140dp"
-                android:layout_marginBottom="75dp"
-                android:elevation="2dp"
-                android:src="@drawable/notif_icon"
-                app:background="?attr/colorPreferenceLine"
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:id="@+id/notif"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_marginRight="140dp"-->
+<!--                android:layout_marginBottom="75dp"-->
+<!--                android:elevation="2dp"-->
+<!--                android:src="@drawable/notif_icon"-->
+<!--                app:background="?attr/colorPreferenceLine"-->
 
-                app:tint="?attr/colorOnPrimary"
-                android:backgroundTint="?attr/colorPreferenceLine"
-                />
+<!--                app:tint="?attr/colorOnPrimary"-->
+<!--                android:backgroundTint="?attr/colorPreferenceLine"-->
+<!--                />-->
 
             </RelativeLayout>
 
