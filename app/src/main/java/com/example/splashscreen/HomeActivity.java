@@ -56,6 +56,7 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     RecyclerView recyclerView;
     MyAdapter myAdapter;
     ArrayList<Model> list;
+    static ArrayList<String> Task_Id;
     UUID userId;
     String currentDate;
 
@@ -152,6 +153,7 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         fa = FirebaseAuth.getInstance();
         curr_user = fa.getCurrentUser();
         mail = curr_user.getUid();
+        Task_Id = new ArrayList<>();
 
         userId = (UUID) UUID.randomUUID();
 //        recyclerView = findViewById(R.id.tasks);
@@ -168,6 +170,20 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
                 bottomSheet.show(getSupportFragmentManager(),"Tag");
             }
         });
+//        recyclerView.addOnItemTouchListener(
+//                new RecyclerItemClickListener(this, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+//                    @Override public void onItemClick(View view, int position) {
+//                        // do whatever
+////                        startListSettings();
+//                        startTaskActivity();
+//                    }
+//
+//                    @Override public void onLongItemClick(View view, int position) {
+//                        // do whatever
+////                        Delete_task();
+//                    }
+//                })
+//        );
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -202,10 +218,11 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+                Task_Id.clear();
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
 
-                    Log.d("Nnn", ""+dataSnapshot.getValue());
-
+                    Log.d("Nnn", ""+dataSnapshot.getKey());
+                    Task_Id.add(dataSnapshot.getKey());
                     Model model=  dataSnapshot.getValue(Model.class);
                     list.add(0,model);
                 }
@@ -217,9 +234,9 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
             }
         });
-        for (int i=0;i<list.size();i++){
-            Log.d("FFF",list.get(i).TaskName);
-        }
+//        for (int i=0;i<list.size();i++){
+//            Log.d("FFF",list.get(i).TaskName);
+//        }
     }
 
     private void showDialog() {
@@ -241,6 +258,10 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
     }
 
+    public void startTaskActivity() {
+        Intent settingsIntent = new Intent(HomeActivity.this, TaskSettings.class);
+        startActivity(settingsIntent);
+    }
 
     public void startSettingsActivity() {
         Intent settingsIntent = new Intent(HomeActivity.this, PreferencesActivity.class);
@@ -311,5 +332,6 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
             }
         }
     }
+
 
 }

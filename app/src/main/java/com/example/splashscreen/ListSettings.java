@@ -40,7 +40,7 @@ public class ListSettings extends AppCompatActivity {
         nextListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startTaskSettings();
+
             }
         });
 

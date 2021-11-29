@@ -3,8 +3,25 @@ package com.example.splashscreen;
 public class Model {
     String TaskDate;
     String Description;
+    String ltask;
+    String Priority;
+
+    public String getPriority() {
+        return Priority;
+    }
+
+    public String getLtask() {
+        return ltask;
+    }
+
+
+    public boolean isCheckboxStatus() {
+        return checkboxStatus;
+    }
+
     String TaskName;
     String Time;
+    boolean checkboxStatus;
     public String getTaskName() {
         return TaskName;
     }
@@ -17,6 +34,7 @@ public class Model {
     public String getTime() {
         return Time;
     }
+
 
 
 
