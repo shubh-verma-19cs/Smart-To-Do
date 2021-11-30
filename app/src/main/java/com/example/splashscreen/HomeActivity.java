@@ -53,17 +53,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -73,7 +77,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
-public class HomeActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class HomeActivity extends AppCompatActivity {
 
 
     RecyclerView recyclerView;
@@ -92,24 +96,33 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     TextView textNotifItemCount;
     int mNotifItemCount = 10;
     FloatingActionButton floatadd;
-    FloatingActionButton bottomsheet;
+    FloatingActionButton bottomsheet, mapbtn;
     FloatingActionButton dateButton;
+    
     Calendar c;
 
     private static Context mContext;
 
-    @Override
-    public void onDateSet(DatePicker datePicker, int year, int month, int date) {
-        c = Calendar.getInstance();
-        c.set(Calendar.YEAR,year);
-        c.set(Calendar.MONTH,month);
-        c.set(Calendar.DAY_OF_MONTH,date);
-        currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-        b.date = currentDate;
-        b.nday = String.valueOf(date);
-        b.nmonth = String.valueOf(month);
-        b.nyear = String.valueOf(year);
-    }
+//    @Override
+//    public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+//        c = Calendar.getInstance();
+//        c.set(Calendar.YEAR,year);
+//        c.set(Calendar.MONTH,month);
+//        c.set(Calendar.DAY_OF_MONTH,date);
+//        currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+//        Log.d("DATE::",currentDate);
+//        b.date = currentDate;
+//
+////        Intent settingsIntent = new Intent(this, BottomSheet.class);
+////        settingsIntent.putExtra("reminderYear",""+year);
+////        settingsIntent.putExtra("reminderMonth",""+month);
+////        settingsIntent.putExtra("reminderDate",""+date);
+////        startActivity(settingsIntent);
+//
+//        b.nday = ""+date;
+//        b.nmonth = ""+month;
+//        b.nyear = ""+year;
+//    }
     DatabaseReference mDatabase,databaseReference;
     FirebaseDatabase db;
     FirebaseAuth fa;
@@ -147,6 +160,7 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        mapbtn = findViewById(R.id.mapbutton);
         sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z");
         currentDateandTime = sdf.format(new Date());
 //        dateButton = findViewById(R.id.notif);
@@ -263,12 +277,12 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
-//        floatadd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startListSettings();
-//            }
-//        });
+        mapbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openmaps();
+            }
+        });
 
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -281,6 +295,18 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
 
 
+    }
+
+    public void openmaps() {
+        boolean hasmappermission= (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION )== PackageManager.PERMISSION_GRANTED);
+        if(!hasmappermission)
+        {
+            String[] permissionarr= {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
+            ActivityCompat.requestPermissions(this,permissionarr,PackageManager.PERMISSION_GRANTED);
+//            ActivityCompat.requestPermissions(this,String[] {Manifest.permission.ACCESS_FINE_LOCATION},PackageManager.PERMISSION_GRANTED);
+        }
+        Intent mapintent= new Intent(HomeActivity.this,MapsActivity.class);
+        startActivity(mapintent);
     }
 
     Model deleted_task = null;
@@ -453,13 +479,31 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 //            DatabaseReference deleteall= FirebaseStorage.getInstance().getReference()
 //                    .child("profileImages")
 //                    .child(uid+".jpeg");
-                mDatabase.removeValue()
+
+
+                AlertDialog.Builder builder= new AlertDialog.Builder(HomeActivity.this);
+                builder.setMessage("Delete all tasks?")
+                        .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mDatabase.removeValue()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(HomeActivity.this, "All tasks removed", Toast.LENGTH_SHORT).show();
                             }
                         });
+                            }
+                        }).setNegativeButton("CANCEL",null);
+                AlertDialog alertDialog= builder.create();
+                alertDialog.show();
+//                mDatabase.removeValue()
+//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void unused) {
+//                                Toast.makeText(HomeActivity.this, "All tasks removed", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
             }
             else
             {

@@ -1,5 +1,7 @@
 package com.example.splashscreen;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.PreferenceFragmentCompat;
@@ -9,23 +11,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -60,7 +67,8 @@ public class TaskSettings extends AppCompatActivity {
     String userid;
     FirebaseUser curr_user;
 
-
+    String Copy_link;
+    ImageView copyLink,map_button;
     //    ArrayList taskSettingName = new ArrayList<>();
 //    ArrayList taskSettingDesc = new ArrayList<>(Arrays.asList("Task Name", "Task Description", "Task date", "Task time", "Task priority", "Task link", "Task location","Task Status"));
     @Override
@@ -81,6 +89,9 @@ public class TaskSettings extends AppCompatActivity {
         TaskLocation = findViewById(R.id.taskLocation);
         TaskStatus = findViewById(R.id.taskStatus);
 
+        copyLink = findViewById(R.id.copyLink);
+        map_button = findViewById(R.id.map_button);
+
         tname = getIntent().getStringExtra("name");
         tdesc = getIntent().getStringExtra("Desc");
         ttime = getIntent().getStringExtra("Time");
@@ -89,6 +100,8 @@ public class TaskSettings extends AppCompatActivity {
         tlink = getIntent().getStringExtra("Link");
         priority = getIntent().getStringExtra("Priority");
         is_completed = getIntent().getStringExtra("Status");
+
+        Copy_link = tlink;
 
         Taskname.setText(tname);
         TaskDesc.setText(tdesc);
@@ -122,12 +135,113 @@ public class TaskSettings extends AppCompatActivity {
 //
 //        TaskSettingsAdapter taskSettingsAdapter = new TaskSettingsAdapter(TaskSettings.this, taskSettingImg, taskSettingName, taskSettingDesc);
 //        recyclerView.setAdapter(taskSettingsAdapter);
+
+        copyLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copyLink(view);
+                Toast.makeText(getApplicationContext(),"Link Copied !!",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        map_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mapIntent = new Intent(TaskSettings.this, TaskLocation.class);
+                startActivity(mapIntent);
+            }
+        });
+
+
+
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_menu, menu);
+        menu.add("Delete");
 //        return super.onCreateOptionsMenu(menu);
-//    }
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case  R.id.share:
+
+                    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+
+                    // type of the content to be shared
+                    sharingIntent.setType("text/plain");
+
+                    // Body of the content
+//
+                    StringBuilder bld = new StringBuilder();
+                    bld.append("Task:- ");
+
+//                    for (int i = 0; i < list.size(); i++) {
+                        bld.append("\r\n"+"Taskname:"+tname).append("\r\n"+"Task Description:"+tdesc).append("\r\n"+"Due date:"+tdate).append(ttime).append("\r\n"+tlink);
+//                    }
+
+                    String str = bld.toString();
+                    Log.d("allname",str);
+//                    String tasknamelist= list.get(0).TaskName;
+//                    Log.d("taskfetch",tasknamelist);
+//                    String shareBody = "Your Body Here";
+
+                    // subject of the content. you can share anything
+                    String shareSubject = "Task Details";
+
+                    // passing body of the content
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT, str);
+
+                    // passing subject of the content
+                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
+                    startActivity(Intent.createChooser(sharingIntent, "Share Tasks using"));
+
+//                    Toast.makeText(this, "No task to share!", Toast.LENGTH_SHORT).show();
+                break;
+
+//
+        }
+        if(item.getTitle()=="Delete") {
+//            if (list.size() != 0) {
+//                Toast.makeText(this, "Delete all ", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder= new AlertDialog.Builder(TaskSettings.this);
+            builder.setMessage("Delete task?")
+                    .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            DatabaseReference deleteall= FirebaseDatabase.getInstance().getReference().child("users").child(userid).child("Tasks").child(tid);
+//                    .child("profileImages")
+//                    .child(uid+".jpeg");
+                            deleteall.removeValue()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Toast.makeText(TaskSettings.this, "Task removed", Toast.LENGTH_SHORT).show();
+                                            Intent listIntent = new Intent(TaskSettings.this, HomeActivity.class);
+                                            startActivity(listIntent);
+
+                                        }
+                                    });
+                        }
+                    }).setNegativeButton("CANCEL",null);
+            AlertDialog alertDialog= builder.create();
+            alertDialog.show();
+
+//            }
+//            else
+//            {
+//                Toast.makeText(this, "No task to delete", Toast.LENGTH_SHORT).show();
+//            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     private void startDialog(int task_number, String tid) {
         Update_Dialog update_dialog = new Update_Dialog(task_number,tid);
@@ -197,6 +311,7 @@ public class TaskSettings extends AppCompatActivity {
             }
         };
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,onDateSetListener,2021,month,date);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
     public void popTaskName(View view){
@@ -210,6 +325,21 @@ public class TaskSettings extends AppCompatActivity {
     }
     public void popTaskLink(View view){
         startDialog(3,tid);
+    }
+
+
+    public void copyLink(View view) {
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(Copy_link);
+//            Toast.makeText(this,"Link Copied !!",Toast.LENGTH_SHORT);
+        } else {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
+            android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", Copy_link);
+            clipboard.setPrimaryClip(clip);
+
+        }
+
     }
 
 }

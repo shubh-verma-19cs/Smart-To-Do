@@ -25,35 +25,9 @@ import java.util.Calendar;
 public class DeviceBootReceiver extends BroadcastReceiver{
     public static final String ACTION_ALARM = "notification.ALARM";
     BottomSheet b;
-//    static String currentDateTime;
-
-//    FirebaseAuth firebaseAuth;
-//    FirebaseUser firebaseUser;
-//    String mail;
-//    DatabaseReference databaseReference;
-
     @Override
     public void onReceive(Context context, Intent intent) {
-//        b = new BottomSheet();
-//        currentDateTime = b.sendCurrentDate();
-//        firebaseAuth= FirebaseAuth.getInstance();
-//        firebaseUser= firebaseAuth.getCurrentUser();
-//        mail= firebaseUser.getUid();
-//        Log.d("AAAAAAAAA",currentDateTime);
-//        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(mail).child(currentDateTime).child("TaskName");
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                String taskName = snapshot.getValue().toString();
-////                Log.d("MAMAMMA",taskName);
-//                Toast.makeText(context, taskName, Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+
         if (ACTION_ALARM.equals(intent.getAction())) {
             Toast.makeText(context, ACTION_ALARM, Toast.LENGTH_SHORT).show();
 
@@ -71,39 +45,9 @@ public class DeviceBootReceiver extends BroadcastReceiver{
 
 
 
-
-//            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//            Notification notification = intent.getParcelableExtra( NOTIFICATION ) ;
-//            if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
-//                int importance = NotificationManager. IMPORTANCE_HIGH ;
-//                NotificationChannel notificationChannel = new NotificationChannel( CH_ID , "NOTIFICATION_CHANNEL_NAME" , importance) ;
-//                assert notificationManager != null;
-//                notificationManager.createNotificationChannel(notificationChannel) ;
-//            }
-//            int id = intent.getIntExtra( NOTIFICATION_ID , 0 ) ;
-//            assert notificationManager != null;
-//            notificationManager.notify(id , notification) ;
-
         }
 
 
 
-
-//        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-//            // on device boot compelete, reset the alarm
-//            Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
-//
-//            AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTimeInMillis(System.currentTimeMillis());
-//            calendar.set(Calendar.HOUR_OF_DAY, 19);
-//            calendar.set(Calendar.MINUTE, 29);
-//            calendar.set(Calendar.SECOND, 1);
-//
-//            manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-//                    AlarmManager.INTERVAL_DAY, pendingIntent);
-//        }
     }
 }

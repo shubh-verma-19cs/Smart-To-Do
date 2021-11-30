@@ -340,7 +340,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialicons/description/baseline_description_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialicons/map/baseline_map_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -351,7 +351,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="2f7e7d" />
-                            <entry key="outputName" value="desc" />
+                            <entry key="outputName" value="ic_baseline_map_24" />
                             <entry key="sourceFile" value="$PROJECT_DIR$/app/src/main/assets/7853741_logout_kashifarif_exit_out_close_icon.svg" />
                           </map>
                         </option>

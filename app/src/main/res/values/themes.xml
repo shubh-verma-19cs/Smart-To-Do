@@ -16,10 +16,10 @@
 
         <item name="navHeadBack">@color/gradient_2</item>
 
-        <item name="cardBack">#DDCAFF</item>
+        <item name="cardBack">#F0E7FF</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/gradient_start</item>
-        <item name="homeBack" ></item>
+
         <!-- Customize your theme here. -->
     </style>
     <style name="Theme.SplashScreen.NoActionBar">

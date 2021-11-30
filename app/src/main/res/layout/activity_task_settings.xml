@@ -268,21 +268,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
+
         android:layout_below="@+id/ts5"
         android:id="@+id/ts6"
-        android:onClick="popTaskLink"
+
         >
 
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:padding="8dp"
+
+            android:id="@+id/copyLink"
             android:src="@drawable/link"/>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:onClick="popTaskLink"
             android:layout_gravity="center">
 
             <TextView
@@ -328,6 +332,7 @@
             android:padding="8dp"
             android:src="@drawable/location"/>
 
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -353,7 +358,15 @@
                 android:text="Task Location"/>
 
 
+
         </LinearLayout>
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:id="@+id/map_button"
+            android:src="@drawable/ic_baseline_map_24"
+            android:layout_marginLeft="170dp"
+            android:layout_marginRight="20dp"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

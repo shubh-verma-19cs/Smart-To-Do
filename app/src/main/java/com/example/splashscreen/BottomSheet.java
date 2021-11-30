@@ -1,6 +1,8 @@
 package com.example.splashscreen;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -50,21 +52,17 @@ public class BottomSheet extends BottomSheetDialogFragment  {
     }
 
 
-    BottomSheetDialog dialog;
     HomeActivity homeActivity;
     String currentDateTime;
     SimpleDateFormat sdf;
     TaskSettings taskSettings;
-//    String currentDateandTime;
 
 
-
-    UUID userId;
     static String date;
+    String currentDate;
     private DatabaseReference mDatabase;
-    static String Time;
-    ImageView time;
-    int thour,tmin;
+
+    static int thour,tmin;
     String Task_Time;
     static String link_task;
     static String link_meet;
@@ -72,24 +70,15 @@ public class BottomSheet extends BottomSheetDialogFragment  {
     String mail;
     FirebaseUser curr_user;
 
-    int nhour, nmin;
-    static String nday, nmonth, nyear;
+    long millis;
+
+
+    String year1, month1, day1;
+    String compDate, time1;
 
     TextView dateTV, timeTV;
-//    boolean checkBox;
 
     String checkBox="Not Completed";
-
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
-//    }
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle)
-//    }
 
     @Nullable
     @Override
@@ -102,12 +91,8 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         ImageView Time = view1.findViewById(R.id.task_time);
 
         homeActivity = new HomeActivity();
-
         dateTV = view1.findViewById(R.id.dateTV);
         timeTV = view1.findViewById(R.id.timeTV);
-
-        dateTV.setVisibility(View.GONE);
-        timeTV.setVisibility(View.GONE);
 
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
@@ -120,15 +105,9 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         curr_user = fb.getCurrentUser();
         mail = curr_user.getUid();
         Log.d("uid", ""+mail);
-        userId = (UUID) UUID.randomUUID();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        calendar_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment datepicker = new DatePickerFragment();
-                datepicker.show(getActivity().getSupportFragmentManager(), "Date Picker");
-            }
-        });
+
         ImageView time = view1.findViewById(R.id.task_time);
         ImageView meet_link = view1.findViewById(R.id.task_link);
         meet_link.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +116,41 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                 startDialog();
             }
         });
+
+
+        calendar_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar c = Calendar.getInstance();
+                int day =c.get(Calendar.DAY_OF_MONTH);
+                int month = c.get(Calendar.MONTH);
+                int year = c.get(Calendar.YEAR);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+                        c.set(Calendar.YEAR,year);
+                        c.set(Calendar.MONTH,month);
+                        c.set(Calendar.DAY_OF_MONTH,day);
+                        year1 = ""+year;
+                        month1 = ""+month;
+                        day1 = ""+day;
+                        compDate = day1+"-"+month1+"-"+year1;
+                        Log.d("Acha sa tag:",compDate);
+                        currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+                        dateTV.setText(currentDate);
+
+
+                    }
+                },year,month,day);
+
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                    datePickerDialog.show();
+//                    Log.d("normal:",""+year+year1+month+month1+day+day1);
+
+            }
+        });
+
 
         time.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,12 +161,14 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                         thour = selectedHour;
                         tmin = selectedMin;
                         String time = thour + ":" + tmin;
+                        time1 = thour + ":" + tmin;
                         SimpleDateFormat f24hour = new SimpleDateFormat("HH:mm");
                         try {
                             Date date = f24hour.parse(time);
+                            Log.d("DATE_",time);
                             SimpleDateFormat f12hour = new SimpleDateFormat("HH:mm aa");
                             Task_Time = f12hour.format(date);
-
+                            timeTV.setText(time);
 
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -173,14 +189,21 @@ public class BottomSheet extends BottomSheetDialogFragment  {
 //                EditText taskname = view.findViewById(R.id.task_name);
                 String tname,tdesc;
 
-                if (date!=null && time!=null)
+
+                if (currentDate!=null && time!=null)
                 {
-                    homeActivity.setAlarm( nday, nmonth, nyear, String.valueOf(thour), String.valueOf(tmin));
+//                    Log.d("DATE::>",nday+nmonth+nyear);
+
+                    setAlarm( day1, month1, year1, String.valueOf(thour), String.valueOf(tmin));
                 }
 
-                if(date==null){
-                    date = " ";
+
+
+                if(currentDate==null){
+                    currentDate = " ";
                 }
+
+
                 if(Task_Time==null){
                     Task_Time = " ";
                 }
@@ -196,19 +219,19 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                         if(!TextUtils.isEmpty(link_meet)){
                             if(!TextUtils.isEmpty(link_task)){
                                 taskSettings.tlink = link_task;
-                                writeNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_meet,""+link_task,checkBox);
+                                writeNewUser(currentDateTime,tname,tdesc,""+currentDate,""+Task_Time,""+link_meet,""+link_task,checkBox);
                             }
                             else{
-                                writeNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_meet,checkBox);
+                                writeNewUser(currentDateTime,tname,tdesc,""+currentDate,""+Task_Time,""+link_meet,checkBox);
                             }
                         }
                         else{
                             if(!TextUtils.isEmpty(link_task)){
                                 taskSettings.tlink = link_task;
-                                mwriteNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,""+link_task,checkBox);
+                                mwriteNewUser(currentDateTime,tname,tdesc,""+currentDate,""+Task_Time,""+link_task,checkBox);
                             }
                             else{
-                                mtwriteNewUser(currentDateTime,tname,tdesc,""+date,""+Task_Time,checkBox);
+                                mtwriteNewUser(currentDateTime,tname,tdesc,""+currentDate,""+Task_Time,checkBox);
                             }
                         }
                         Toast.makeText(getContext(),"Task Added Successfully",Toast.LENGTH_LONG).show();
@@ -217,18 +240,18 @@ public class BottomSheet extends BottomSheetDialogFragment  {
                         tdesc = taskdesc.getText().toString().trim();
                         if(!TextUtils.isEmpty(link_meet)){
                             if(!TextUtils.isEmpty(link_task)){
-                                dwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_meet,""+link_task,checkBox);
+                                dwriteNewUser(currentDateTime,tname,""+currentDate,""+Task_Time,""+link_meet,""+link_task,checkBox);
                             }
                             else{
-                                dwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_meet,checkBox);
+                                dwriteNewUser(currentDateTime,tname,""+currentDate,""+Task_Time,""+link_meet,checkBox);
                             }
                         }
                         else{
                             if(!TextUtils.isEmpty(link_task)){
-                                mdwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,""+link_task,checkBox);
+                                mdwriteNewUser(currentDateTime,tname,""+currentDate,""+Task_Time,""+link_task,checkBox);
                             }
                             else{
-                                mtdwriteNewUser(currentDateTime,tname,""+date,""+Task_Time,checkBox);
+                                mtdwriteNewUser(currentDateTime,tname,""+currentDate,""+Task_Time,checkBox);
                             }
                         }
                         Toast.makeText(getContext(),"Task Added Successfully",Toast.LENGTH_LONG).show();
@@ -244,26 +267,60 @@ public class BottomSheet extends BottomSheetDialogFragment  {
             }
         });
 
-//        dialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialog);
-//        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-//            @Override
-//            public void onShow(DialogInterface dialog) {
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        BottomSheetDialog d = (BottomSheetDialog) dialog;
-//                        FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
-//                        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-//                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-//                    }
-//                },0);
-//            }
-//        });
-
-
         return view1;
 
 
+
+
+    }
+
+    public void setAlarm( String day, String month, String year, String hour, String minute) {
+//        Context c = getApplicationContext();
+
+        String toParse = compDate + " " + time1; // Results in "2-5-2012 20:43"
+        SimpleDateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm"); // I assume d-M, you may refer to M-d for month-day instead.
+        try {
+            Date date = formatter.parse(toParse);
+            millis = date.getTime();
+            Log.d("MILLIS",""+millis);// You will need try/catch around this
+        }catch (ParseException p){
+
+        }
+
+
+        Intent intent = new Intent(getContext(), DeviceBootReceiver.class);
+        intent.setAction(DeviceBootReceiver.ACTION_ALARM);
+
+        Calendar now = Calendar.getInstance();
+
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(getContext(),
+                ((int) millis), intent, 0);
+
+        Toast.makeText(getContext(), String.valueOf(now.getTimeInMillis()), Toast.LENGTH_SHORT).show();
+
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(getActivity().ALARM_SERVICE);
+
+
+//        Calendar startTime = Calendar.getInstance();
+//        startTime.set(Calendar.YEAR, Integer.parseInt(String.valueOf(year)));
+//        startTime.set(Calendar.MONTH, Integer.parseInt(String.valueOf(month))-1);
+//        startTime.set(Calendar.DAY_OF_MONTH, Integer.parseInt(String.valueOf(day)));
+//        startTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(String.valueOf(hour)));
+//        startTime.set(Calendar.MINUTE, Integer.parseInt(String.valueOf(minute)));
+//        startTime.set(Calendar.SECOND, 1);
+
+
+
+//        long time;
+//        if (now.before(startTime)) {
+//            time = startTime.getTimeInMillis();
+//        } else {
+//            startTime.add(Calendar.DATE, 1);
+//            time = startTime.getTimeInMillis();
+//        }
+//        Log.d("TIME_",""+time);
+
+        alarmManager.setExact(AlarmManager.RTC, millis, alarmIntent);
 
 
     }
@@ -274,11 +331,6 @@ public class BottomSheet extends BottomSheetDialogFragment  {
     }
 
     public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String checkBox) {
-//        HashMap<String ,String > usermap = new HashMap<>();
-//        usermap.put("TaskName",name);
-//        usermap.put("Description",taskdesc);
-//        usermap.put("Date",taskdate);
-//        usermap.put("Time",Time);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
@@ -292,23 +344,9 @@ public class BottomSheet extends BottomSheetDialogFragment  {
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("meet").setValue(meet);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("checkboxStatus").setValue(checkBox);
     }
-    public void startHomePage() {
 
-        Intent logIntent = new Intent(getContext(), HomeActivity.class);
-//        logIntent.putExtra("username", String.valueOf(userEdit));
-//        logIntent.putExtra("password", String.valueOf(passEdit));
-        startActivity(logIntent);
-
-    }
     public void writeNewUser(String currentDateTime, String name, String taskdesc,String taskdate,String Time,String meet,String ltask,String checkBox){
-//        HashMap<String ,String > usermap = new HashMap<>();
-//        usermap.put("TaskName",name);
-//        usermap.put("Description",taskdesc);
-//        usermap.put("Date",taskdate);
-//        usermap.put("Time",Time);
-//        usermap.put("meetlink",meet);
-//        usermap.put("tasklink",ltask);
-//        mDatabase.child("users").child(userId.toString()).setValue(usermap);
+
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskName").setValue(name);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("Description").setValue(taskdesc);
         mDatabase.child("users").child(mail).child("Tasks").child(currentDateTime).child("TaskDate").setValue(taskdate);
@@ -368,5 +406,8 @@ public class BottomSheet extends BottomSheetDialogFragment  {
     public String sendCurrentDate(){
         return currentDateTime;
     }
+
+
+
 
 }

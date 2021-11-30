@@ -105,8 +105,9 @@ public class Update_Dialog extends AppCompatDialogFragment {
     public void startTaskPage() {
 
         Intent logIntent = new Intent(getContext(), TaskSettings.class);
-//        logIntent.putExtra("username", String.valueOf(userEdit));
+//        logIntent.putExtra("TaskName", String.valueOf(task));
 //        logIntent.putExtra("password", String.valueOf(passEdit));
+
         startActivity(logIntent);
 
     }

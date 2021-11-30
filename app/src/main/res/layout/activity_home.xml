@@ -64,6 +64,21 @@
 <!--                app:tint="?attr/colorOnPrimary"-->
 <!--                android:backgroundTint="?attr/colorPreferenceLine"-->
 <!--                />-->
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:id="@+id/list_settings"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:layout_marginBottom="75dp"-->
+<!--                android:elevation="2dp"-->
+<!--                android:src="@drawable/add"-->
+<!--                app:background="@color/gradient_end"-->
+<!--                app:tint="?attr/colorOnPrimary"-->
+<!--                android:backgroundTint="@color/gradient_end"-->
+<!--                />-->
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/list_settings"
                 android:layout_width="wrap_content"
@@ -71,12 +86,28 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="75dp"
+                android:layout_marginBottom="85dp"
                 android:elevation="2dp"
                 android:src="@drawable/add"
-                app:background="@color/gradient_end"
                 app:tint="?attr/colorOnPrimary"
-                android:backgroundTint="@color/gradient_end"
+                android:backgroundTint="#FFC107"
+                app:borderWidth="0dp"
+                />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/mapbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:elevation="2dp"
+                android:src="@drawable/location"
+                app:background="?attr/colorPreferenceLine"
+                app:tint="?attr/colorOnPrimary"
+                android:backgroundTint="#6DB31B"
+                app:borderWidth="0dp"
                 />
 
 <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
