@@ -64,16 +64,18 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
         android:id="@+id/remove"
+        android:textColor="?attr/colorPreferenceFore"
         android:text="Remove\nphoto" />
 
     <TextView
+        android:id="@+id/gal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_gallery"
         android:layout_marginLeft="45dp"
         android:layout_marginTop="10dp"
+        android:textColor="?attr/colorPreferenceFore"
         android:layout_toRightOf="@+id/remove"
-        android:id="@+id/gal"
         android:text="Gallery" />
 
     <TextView
@@ -81,8 +83,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_camera"
         android:layout_toRightOf="@id/gal"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="56dp"
         android:layout_marginTop="10dp"
+        android:textColor="?attr/colorPreferenceFore"
         android:text="Camera" />
 
 </RelativeLayout>

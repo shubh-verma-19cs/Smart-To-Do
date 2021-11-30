@@ -25,15 +25,16 @@
 
         <item name="colorSecondary">#1C1C1C</item>
         <item name="colorSecondaryVariant">#282828</item>
-        <item name="colorOnSecondary">#EBDBB2</item>
+        <item name="colorOnSecondary">#D7DBF8</item>
 
         <item name="colorPreferenceBack">#2F2F2F</item>
-        <item name="colorPreferenceFore">#EBDBB2</item>
-        <item name="colorPreferenceLine">#8ec07c</item>
+        <item name="colorPreferenceFore">#C3DDEA</item>
+        <item name="colorPreferenceLine">#6DBCBA</item>
 
         <item name="navHeadBack">#1E3E76</item>
+        <item name="cardBack">#803D6BA2</item>
 
-        <item name="android:statusBarColor" tools:targetApi="l">#22201F</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/gradient_start</item>
     </style>
 
     <style name="Theme.SplashScreen.NoActionBar">

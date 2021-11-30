@@ -3,10 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="2dp"
-    android:layout_marginHorizontal="15dp"
-    android:layout_marginVertical="6dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="3dp"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="4dp"
+    android:backgroundTint="?attr/cardBack"
     >
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -15,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/linear"
+            android:layout_marginTop="10dp"
             >
 
             <CheckBox
@@ -22,12 +24,12 @@
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_marginTop="8dp"
-                android:buttonTint="@color/gradient_end"
+                android:buttonTint="#2389FF"
                 android:paddingStart="4dp" />
             <TextView
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorPreferenceFore"
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/iosevka_light_extended"
@@ -42,7 +44,7 @@
             android:layout_height="wrap_content"
             android:maxWidth="175dp"
             android:maxHeight="16dp"
-            android:textColor="#3C3C3C"
+            android:textColor="?attr/colorPreferenceFore"
             android:textSize="12dp"
             android:layout_marginTop="-4dp"
             android:layout_marginLeft="34dp"
@@ -58,7 +60,7 @@
             android:textSize="12dp"
             android:id="@+id/tdate"
             android:layout_alignParentRight="true"
-            android:textColor="#1A1A1A"
+            android:textColor="?attr/colorPreferenceFore"
             android:layout_marginRight="8dp"
             android:layout_gravity="end"
             android:text=""
@@ -69,8 +71,8 @@
             android:layout_marginTop="40dp"
             android:textSize="12dp"
             android:id="@+id/ttime"
-            android:layout_marginBottom="10dp"
-            android:textColor="#1A1A1A"
+            android:layout_marginBottom="15dp"
+            android:textColor="?attr/colorPreferenceFore"
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"
             android:layout_gravity="end"

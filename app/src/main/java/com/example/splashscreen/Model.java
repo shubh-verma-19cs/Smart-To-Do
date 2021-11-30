@@ -15,13 +15,13 @@ public class Model {
     }
 
 
-    public boolean isCheckboxStatus() {
+    public String isCheckboxStatus() {
         return checkboxStatus;
     }
 
     String TaskName;
     String Time;
-    boolean checkboxStatus;
+    String checkboxStatus;
     public String getTaskName() {
         return TaskName;
     }

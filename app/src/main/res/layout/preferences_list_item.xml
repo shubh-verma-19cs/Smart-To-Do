@@ -32,7 +32,7 @@
                 android:id="@+id/optionName"
                 android:text="optionName"
                 android:textStyle="bold"
-                android:textSize="15dp"
+                android:textSize="16dp"
                 android:textColor="?attr/colorPreferenceFore"
                 android:paddingLeft="20dp"/>
             <TextView

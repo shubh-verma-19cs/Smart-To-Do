@@ -7,6 +7,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -15,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,6 +53,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -179,9 +182,9 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.i("Username profile", snapshot.getValue(String.class));
+//                Log.i("Username profile", snapshot.getValue(String.class));
                 String username= snapshot.getValue(String.class).toString();
-                Log.d("useriner check",username);
+//                Log.d("useriner check",username);
                 profiletext.setText(username);
             }
 
@@ -204,6 +207,13 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
                     case R.id.settings:
                         Intent i1 = new Intent(HomeActivity.this, PreferencesActivity.class);
                         startActivity(i1);
+                        break;
+
+                    case R.id.theme:
+                        if ((AppCompatDelegate.getDefaultNightMode())!=(AppCompatDelegate.MODE_NIGHT_NO))
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        else
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                         break;
 
                     case R.id.logout:
@@ -249,6 +259,9 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         recyclerView.setAdapter(myAdapter);
         EventChangeListner();
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
 
 //        floatadd.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -268,8 +281,41 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
 
 
 
-
     }
+
+    Model deleted_task = null;
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT ) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int pos = viewHolder.getAdapterPosition();
+            int sz = Task_Id.size();
+            switch (direction){
+                case ItemTouchHelper.LEFT:
+                    deleted_task = list.get(pos);
+                    list.remove(pos);
+                    myAdapter.notifyItemRemoved(pos);
+                    deleteTask(mail,Task_Id.get(sz-pos-1));
+                    break;
+//                case ItemTouchHelper.RIGHT:
+//                    list.remove(pos);
+//                    myAdapter.notifyItemRemoved(pos);
+//                    deleteTask(mail,Task_Id.get(sz-pos-1));
+//                    break;
+            }
+        }
+    };
+
+    private void deleteTask (String Uid,String taskid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(Uid).child("Tasks").child(taskid);
+        reference.removeValue();
+        Toast.makeText(this,"Task Deleted",Toast.LENGTH_SHORT).show();
+    }
+
 
     private void EventChangeListner() {
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -342,18 +388,19 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.top_menu, menu);
-        final MenuItem menuItem = menu.findItem(R.id.action_notif);
-
-        View actionView = menuItem.getActionView();
-        textNotifItemCount = (TextView) actionView.findViewById(R.id.notif_icon);
-
-        setupBadge();
-        actionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onOptionsItemSelected(menuItem);
-            }
-        });
+        menu.add("Delete all");
+//        final MenuItem menuItem = menu.findItem(R.id.share);
+//
+//        View actionView = menuItem.getActionView();
+////        textNotifItemCount = (TextView) actionView.findViewById(R.id.notif_icon);
+//
+////        setupBadge();
+//        actionView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onOptionsItemSelected(menuItem);
+//            }
+//        });
 
         return true;
     }
@@ -361,34 +408,85 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_notif: {
+            case  R.id.share:
+                if(list.size() !=0){
+                    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 
-//                Notification activity;
-                Intent notifAct = new Intent(HomeActivity.this, Notifications.class);
-                startActivity(notifAct);
-                return true;
+                    // type of the content to be shared
+                    sharingIntent.setType("text/plain");
+
+                    // Body of the content
+//
+                    StringBuilder bld = new StringBuilder();
+                    bld.append("Tasks:- ");
+
+                    for (int i = 0; i < list.size(); i++) {
+                        bld.append("\r\n"+list.get(i).TaskName);
+                    }
+
+                    String str = bld.toString();
+                    Log.d("allname",str);
+                    String tasknamelist= list.get(0).TaskName;
+                    Log.d("taskfetch",tasknamelist);
+                    String shareBody = "Your Body Here";
+
+                    // subject of the content. you can share anything
+                    String shareSubject = "Your Subject Here";
+
+                    // passing body of the content
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT, str);
+
+                    // passing subject of the content
+                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
+                    startActivity(Intent.createChooser(sharingIntent, "Share Tasks using"));}
+                else {
+                    Toast.makeText(this, "No task to share!", Toast.LENGTH_SHORT).show();
+
+                }
+                break;
+
+//
+        }
+        if(item.getTitle()=="Delete all") {
+            if (list.size() != 0) {
+                Toast.makeText(this, "Delete all ", Toast.LENGTH_SHORT).show();
+//            DatabaseReference deleteall= FirebaseStorage.getInstance().getReference()
+//                    .child("profileImages")
+//                    .child(uid+".jpeg");
+                mDatabase.removeValue()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(HomeActivity.this, "All tasks removed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+            else
+            {
+                Toast.makeText(this, "No task to delete", Toast.LENGTH_SHORT).show();
             }
         }
+
         return super.onOptionsItemSelected(item);
     }
 
 
 
 
-    private void setupBadge() {
-        if(textNotifItemCount != null){
-            if (mNotifItemCount == 0){
-                if (textNotifItemCount.getVisibility() != View.GONE){
-                    textNotifItemCount.setVisibility(View.GONE);
-                }
-            } else{
-                textNotifItemCount.setText(String.valueOf(Math.min(mNotifItemCount, 99)));
-                if (textNotifItemCount.getVisibility() != View.VISIBLE){
-                    textNotifItemCount.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-    }
+//    private void setupBadge() {
+//        if(textNotifItemCount != null){
+//            if (mNotifItemCount == 0){
+//                if (textNotifItemCount.getVisibility() != View.GONE){
+//                    textNotifItemCount.setVisibility(View.GONE);
+//                }
+//            } else{
+//                textNotifItemCount.setText(String.valueOf(Math.min(mNotifItemCount, 99)));
+//                if (textNotifItemCount.getVisibility() != View.VISIBLE){
+//                    textNotifItemCount.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        }
+//    }
 
 
 

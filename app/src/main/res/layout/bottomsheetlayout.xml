@@ -14,7 +14,7 @@
         android:hint="New task"
         android:height="30dp"
         android:textColorHint="#9D9B9B"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSecondary"
         android:background="@android:color/transparent"
         android:textSize="18dp"
         />
@@ -28,7 +28,7 @@
         android:background="@android:color/transparent"
         android:layout_margin="4dp"
         android:textColorHint="#9B9A9A"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSecondary"
         android:hint="Description"
         android:textSize="14dp"
         />
@@ -79,6 +79,9 @@
         android:layout_marginLeft="300dp"
         android:layout_marginTop="25dp"
         android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:backgroundTint="?attr/navHeadBack"
         android:id="@+id/task_save"
         />
     <ImageView

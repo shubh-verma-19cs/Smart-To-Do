@@ -54,7 +54,8 @@
             android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".TaskSettings"
-            android:exported="true" />
+            android:exported="true"
+            android:parentActivityName=".HomeActivity"/>
         <activity
             android:name=".TabSettings"
             android:exported="true"

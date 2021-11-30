@@ -9,6 +9,8 @@
         <attr name="colorPreferenceFore" format="color"/>
         <attr name="colorPreferenceLine" format="color"/>
         <attr name="navHeadBack" format="color"/>
+        <attr name="cardBack" format="color"/>
+        <attr name="homeBack" format="color"/>
 
     </declare-styleable>
 

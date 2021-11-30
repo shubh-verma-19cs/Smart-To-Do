@@ -74,9 +74,9 @@
                 android:layout_marginBottom="75dp"
                 android:elevation="2dp"
                 android:src="@drawable/add"
-                app:background="?attr/colorPreferenceLine"
+                app:background="@color/gradient_end"
                 app:tint="?attr/colorOnPrimary"
-                android:backgroundTint="#FFC107"
+                android:backgroundTint="@color/gradient_end"
                 />
 
 <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
@@ -106,7 +106,7 @@
         android:id="@+id/nav_view"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu"
-        android:background="?attr/colorOnPrimary"
+
         app:itemTextColor="?attr/colorOnSecondary"
         />
 

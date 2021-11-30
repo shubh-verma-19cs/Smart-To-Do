@@ -94,26 +94,26 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 case 3:
                     Toast.makeText(context, "text size", Toast.LENGTH_SHORT).show();
                     break;
+//                case 4:
+////                    showThemeSelection();
+//
+//                    if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_NO) {
+//                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                        desc.setText("NIGHT MODE");
+//                    }
+//                    else {
+//                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                        desc.setText("LIGHT MODE");
+//                    }
+//                    Toast.makeText(context, "theme", Toast.LENGTH_SHORT).show();
+//                    break;
                 case 4:
-//                    showThemeSelection();
-
-                    if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_NO) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                        desc.setText("NIGHT MODE");
-                    }
-                    else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                        desc.setText("LIGHT MODE");
-                    }
-                    Toast.makeText(context, "theme", Toast.LENGTH_SHORT).show();
-                    break;
-                case 5:
                     Toast.makeText(context, "rating", Toast.LENGTH_SHORT).show();
                     break;
-                case 6:
+                case 5:
                     Toast.makeText(context, "privacy policy", Toast.LENGTH_SHORT).show();
                     break;
-                case 7:
+                case 6:
                     Toast.makeText(context, "version", Toast.LENGTH_SHORT).show();
                     break;
             }

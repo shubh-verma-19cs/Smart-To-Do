@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -95,7 +96,7 @@ public class TaskSettings extends AppCompatActivity {
         TaskDate.setText(tdate);
         TaskPriority.setText(priority);
         TaskLink.setText(tlink);
-//        TaskLocation.setText()
+        TaskStatus.setText(is_completed);
 
 
 //        taskSettingName.add(tname);
@@ -122,7 +123,13 @@ public class TaskSettings extends AppCompatActivity {
 //        TaskSettingsAdapter taskSettingsAdapter = new TaskSettingsAdapter(TaskSettings.this, taskSettingImg, taskSettingName, taskSettingDesc);
 //        recyclerView.setAdapter(taskSettingsAdapter);
     }
-    private void startDialog(int task_number,String tid) {
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        return super.onCreateOptionsMenu(menu);
+//    }
+
+    private void startDialog(int task_number, String tid) {
         Update_Dialog update_dialog = new Update_Dialog(task_number,tid);
         if(task_number==0){
             update_dialog.show(this.getSupportFragmentManager(), "Edit Task Name");

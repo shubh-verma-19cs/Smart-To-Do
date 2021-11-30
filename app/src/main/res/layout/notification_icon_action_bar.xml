@@ -9,23 +9,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/notif_icon" />
+        android:layout_marginRight="6dp"
+        android:src="@drawable/share" />
 
-    <TextView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/notif_icon"
-        android:layout_gravity="right|end|top"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="3dp"
-        android:background="@drawable/badge_background"
-        android:gravity="center"
-        android:padding="3dp"
-        android:textColor="@color/white"
-        android:text="0"
-        android:textSize="10sp"
-        />
+<!--    <TextView-->
+<!--        android:layout_width="20dp"-->
+<!--        android:layout_height="20dp"-->
+<!--        android:id="@+id/notif_icon"-->
+<!--        android:layout_gravity="right|end|top"-->
+<!--        android:layout_marginEnd="5dp"-->
+<!--        android:layout_marginRight="5dp"-->
+<!--        android:layout_marginTop="3dp"-->
+<!--        android:background="@drawable/badge_background"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="3dp"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:text="0"-->
+<!--        android:textSize="10sp"-->
+<!--        />-->
 
 </FrameLayout>
