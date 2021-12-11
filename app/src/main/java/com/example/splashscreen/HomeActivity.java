@@ -252,11 +252,11 @@ public class HomeActivity extends AppCompatActivity implements DatePickerDialog.
         dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
-    public void writeNewUser(String currentDateandTime, String name, String taskdesc) {
-//        user newuser = new user();
-        mDatabase.child("users").child(mail).child(currentDateandTime).child("taskname").setValue(name);
-
-    }
+//    public void writeNewUser(String currentDateandTime, String name, String taskdesc) {
+////        user newuser = new user();
+//        mDatabase.child("users").child(mail).child(currentDateandTime).child("taskname").setValue(name);
+//
+//    }
 
     public void startTaskActivity() {
         Intent settingsIntent = new Intent(HomeActivity.this, TaskSettings.class);
